@@ -2,172 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="edb39750-58db-4156-abfa-0518ef2c97a8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/1562858977091.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/JVM学习笔记.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/Java基础.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/Java工程师知识点.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/Java数据结构.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/Java线程学习笔记.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/Java编码规范.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/Java设计模式.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/Java面试基础题型.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/NIO学习笔记.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1543128109389.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1551248564626.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1558254698829.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1558254701724.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1558254801052.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1558315080516.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1558317147723.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1558317409177.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1559096566556.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1559096641610.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1559097291049.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1559097304641.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1559097339698.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1559107540096.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1559107550730.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1559193754784.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1559210039018.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1559446376311.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1559571017217.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1559571029581.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1559571058845.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1559614553342.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1559650025360.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1559704436953.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1559732879159.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1559830119792.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1559873539713.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1559873740959.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1559914494987.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1559971601202.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1559971628774.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1560157074810.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1560485119943.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1560844201122.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1560920352766.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1561018047183.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1561027294467.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1561036476941.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1561354010423.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1561354046617.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1561354257232.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1561359147481.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1561359162703.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1561359173634.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/1561371966613.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/20170819203413097.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/20170819203518001.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/Base64编码表.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/b01e12b7-6cfc-485b-a03e-a575e6f7b773-1550547636629.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/assets/b01e12b7-6cfc-485b-a03e-a575e6f7b773.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/kotlin学习笔记.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/加密编码技术.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java基础/深入理解java虚拟机笔记.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/Dubbo &amp; Zk学习笔记.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/Json学习笔记.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/Mybatis学习笔记.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/Netty学习笔记.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/Redis分布式锁.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/Shiro学习笔记.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/SpringBatch文档.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/SpringCloud.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/Spring实战.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/Spring家族产品.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/Spring工具代码/SpringUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/WebService.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/assets/1542598519385.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/assets/1547176806894.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/assets/1567408876127.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/assets/1567408954257.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/assets/1567411080671.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/assets/1567411391678.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/assets/1567414688784.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/assets/1580350532698.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/assets/1580350536473.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/assets/1580352314597.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/assets/1580362808346.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/assets/1580363403858.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/assets/1580387005929.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/assets/1580387219818.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/assets/1580387505714.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/assets/1581044332832.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/assets/1581056130059.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/assets/1581082041473.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/assets/1582202032446.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/assets/E%5Cnote%5CIDEA%E6%89%98%E7%AE%A1%E7%AC%94%E8%AE%B0%5C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5CJava%E6%A1%86%E6%9E%B6%5Cassets%5C1567408876127.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/assets/E%5Cnote%5CIDEA%E6%89%98%E7%AE%A1%E7%AC%94%E8%AE%B0%5C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5CJava%E6%A1%86%E6%9E%B6%5Cassets%5C1567411080671-1567428837283.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/assets/E%5Cnote%5CIDEA%E6%89%98%E7%AE%A1%E7%AC%94%E8%AE%B0%5C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5CJava%E6%A1%86%E6%9E%B6%5Cassets%5C1567411080671.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/assets/E%5Cnote%5CIDEA%E6%89%98%E7%AE%A1%E7%AC%94%E8%AE%B0%5C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5CJava%E6%A1%86%E6%9E%B6%5Cassets%5C1567411391678.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/assets/E%5Cnote%5CIDEA%E6%89%98%E7%AE%A1%E7%AC%94%E8%AE%B0%5C%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%5CJava%E6%A1%86%E6%9E%B6%5Cassets%5C1567414688784.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/定时任务调度.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/Java框架/登录权限管理.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/前端技术/ECharts.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/前端技术/Html基础.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/前端技术/Vue学习笔记.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/前端技术/assets/1545655534255.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/前端技术/assets/1545655549447.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/前端技术/assets/1568386282363.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/前端技术/assets/1568471671353.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/前端技术/assets/1568472414306.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/前端技术/assets/1581405487065.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/前端技术/assets/1581405541096.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/前端技术/html DOM操作.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/前端技术/jQuery学习笔记.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/区块链技术/GO语言学习笔记.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/区块链技术/beego学习笔记.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/大数据技术/Spark.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/常用软件技术/ElasticSearch文档.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/常用软件技术/Git学习笔记.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/常用软件技术/Gradle学习笔记.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/常用软件技术/Nginx学习笔记.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/常用软件技术/assets/1543152548269.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/常用软件技术/assets/1543154285142.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/常用软件技术/assets/1543154978820.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/常用软件技术/assets/1544270659092.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/常用软件技术/assets/捕获.JPG" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/常用软件技术/fastdfs学习笔记.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/常用软件技术/快捷键记录.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/操作系统技术/Linux学习笔记.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/操作系统技术/计算机软件学习笔记.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/操作系统技术/软件工程导论.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/数据库技术/MangoDB学习笔记.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/数据库技术/MySQL、MyCAT学习笔记.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/数据库技术/Redis学习笔记.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/数据库技术/assets/10.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/数据库技术/assets/1544270659092.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/数据库技术/assets/1544426208564.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/数据库技术/assets/1544426213726.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/数据库技术/assets/1544844279537.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/数据库技术/assets/4.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/数据库技术/assets/5.JPG" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/数据库技术/assets/9.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/消息中间件/RabbitMQ中间件.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/消息中间件/RocketMQ中间件.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/消息中间件/assets/1551451317435.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/消息中间件/assets/1551451347085.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/消息中间件/assets/1551451366151.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/消息中间件/assets/1551451390333.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/消息中间件/assets/1551451405469.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/消息中间件/assets/1551451429908.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/消息中间件/assets/1552958532723.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/消息中间件/assets/1552959699540.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/消息中间件/assets/pub-sub model.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/消息中间件/assets/产品功能介绍.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/虚拟化技术/Docekr-Compose.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/虚拟化技术/Docker-尚硅谷文档.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/虚拟化技术/Docker学习笔记.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/虚拟化技术/Linux学习笔记.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/虚拟化技术/Shell脚本.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/虚拟化技术/assets/1579614642863.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/虚拟化技术/assets/1579618171712.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/虚拟化技术/assets/1579618200608.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/虚拟化技术/assets/1579920116588.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/虚拟化技术/k8s学习笔记.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/学习笔记/大数据技术/Hadoop.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/学习笔记/大数据技术/assets/1582697836821.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/学习笔记/大数据技术/assets/1582698367521.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/学习笔记/大数据技术/assets/1582859576606.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/学习笔记/大数据技术/assets/1582859609493.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/学习笔记/Java框架/Netty学习笔记.md" beforeDir="false" afterPath="$PROJECT_DIR$/学习笔记/Java框架/Netty学习笔记.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/学习笔记/虚拟化技术/Linux学习笔记.md" beforeDir="false" afterPath="$PROJECT_DIR$/学习笔记/虚拟化技术/Linux学习笔记.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -179,8 +21,7 @@
     <option name="MAKE_PROJECT_ON_SAVE" value="true" />
   </component>
   <component name="DefaultGradleProjectSettings">
-    <option name="testRunner" value="GRADLE" />
-    <option name="delegatedBuild" value="true" />
+    <option name="isMigrated" value="true" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -203,6 +44,7 @@
         <option value="$PROJECT_DIR$/.idea/vcs.xml" />
         <option value="$PROJECT_DIR$/.idea/encodings.xml" />
         <option value="$PROJECT_DIR$/.idea/modules.xml" />
+        <option value="$PROJECT_DIR$/.idea/dictionaries/10838.xml" />
       </list>
     </option>
   </component>
@@ -218,6 +60,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -231,17 +74,35 @@
               <item name="笔记本学习笔记" type="462c0819:PsiDirectoryNode" />
               <item name="学习笔记" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="笔记本学习笔记" type="b2602c69:ProjectViewProjectNode" />
+              <item name="笔记本学习笔记" type="462c0819:PsiDirectoryNode" />
+              <item name="学习笔记" type="462c0819:PsiDirectoryNode" />
+              <item name="大数据技术" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="笔记本学习笔记" type="b2602c69:ProjectViewProjectNode" />
+              <item name="笔记本学习笔记" type="462c0819:PsiDirectoryNode" />
+              <item name="学习笔记" type="462c0819:PsiDirectoryNode" />
+              <item name="大数据技术" type="462c0819:PsiDirectoryNode" />
+              <item name="assets" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="F:/Software/IDEA/learn" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="MavenSettings" />
@@ -268,30 +129,31 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1582334871852</updated>
-      <workItem from="1582334873424" duration="1420000" />
+      <workItem from="1582334873424" duration="2319000" />
+      <workItem from="1582868465677" duration="576000" />
     </task>
+    <task id="LOCAL-00001" summary="tijiao">
+      <created>1582336309824</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1582336309824</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1420000" />
+    <option name="totallyTimeSpent" value="2895000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="2062" height="1126" extended-state="6" />
     <layout>
-      <window_info id="Designer" />
-      <window_info id="UI Designer" />
-      <window_info id="Favorites" side_tool="true" />
-      <window_info id="Alibaba Cloud Explorer" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25249502" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="FindBugs-IDEA" />
-      <window_info anchor="bottom" id="Terminal" visible="true" weight="0.3298969" />
-      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" side_tool="true" />
-      <window_info anchor="bottom" id="Problems" />
-      <window_info anchor="bottom" id="Database Changes" />
-      <window_info anchor="bottom" id="Version Control" />
-      <window_info anchor="bottom" id="Alibaba Cloud View" />
+      <window_info id="Designer" order="2" />
+      <window_info id="UI Designer" order="3" />
+      <window_info id="Favorites" order="4" side_tool="true" />
+      <window_info id="Alibaba Cloud Explorer" order="5" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" />
@@ -299,17 +161,25 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="right" id="Maven" />
-      <window_info anchor="right" id="Palette" />
-      <window_info anchor="right" id="Word Book" side_tool="true" />
-      <window_info anchor="right" id="BPMNPalette" />
-      <window_info anchor="right" id="Alibaba Function Compute" />
-      <window_info anchor="right" id="Database" />
-      <window_info anchor="right" id="Palette&#9;" />
-      <window_info anchor="right" id="Alibaba Log Console" />
+      <window_info anchor="bottom" id="FindBugs-IDEA" order="7" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.32955715" />
+      <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Problems" order="11" />
+      <window_info anchor="bottom" id="Database Changes" order="12" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="13" visible="true" weight="0.1371134" />
+      <window_info anchor="bottom" id="Alibaba Cloud View" order="14" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Maven" order="3" />
+      <window_info anchor="right" id="Palette" order="4" />
+      <window_info anchor="right" id="Word Book" order="5" side_tool="true" />
+      <window_info anchor="right" id="BPMNPalette" order="6" />
+      <window_info anchor="right" id="Alibaba Function Compute" order="7" />
+      <window_info anchor="right" id="Database" order="8" />
+      <window_info anchor="right" id="Palette&#9;" order="9" />
+      <window_info anchor="right" id="Alibaba Log Console" order="10" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
