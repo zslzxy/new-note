@@ -1,15 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="edb39750-58db-4156-abfa-0518ef2c97a8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/学习笔记/大数据技术/Hadoop.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/大数据技术/assets/1582697836821.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/大数据技术/assets/1582698367521.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/大数据技术/assets/1582859576606.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/学习笔记/大数据技术/assets/1582859609493.png" afterDir="false" />
+    <list default="true" id="edb39750-58db-4156-abfa-0518ef2c97a8" name="Default Changelist" comment="tijiao">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/学习笔记/Java框架/Netty学习笔记.md" beforeDir="false" afterPath="$PROJECT_DIR$/学习笔记/Java框架/Netty学习笔记.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/学习笔记/虚拟化技术/Linux学习笔记.md" beforeDir="false" afterPath="$PROJECT_DIR$/学习笔记/虚拟化技术/Linux学习笔记.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -60,8 +53,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -74,23 +65,12 @@
               <item name="笔记本学习笔记" type="462c0819:PsiDirectoryNode" />
               <item name="学习笔记" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="笔记本学习笔记" type="b2602c69:ProjectViewProjectNode" />
-              <item name="笔记本学习笔记" type="462c0819:PsiDirectoryNode" />
-              <item name="学习笔记" type="462c0819:PsiDirectoryNode" />
-              <item name="大数据技术" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="笔记本学习笔记" type="b2602c69:ProjectViewProjectNode" />
-              <item name="笔记本学习笔记" type="462c0819:PsiDirectoryNode" />
-              <item name="学习笔记" type="462c0819:PsiDirectoryNode" />
-              <item name="大数据技术" type="462c0819:PsiDirectoryNode" />
-              <item name="assets" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -131,6 +111,8 @@
       <updated>1582334871852</updated>
       <workItem from="1582334873424" duration="2319000" />
       <workItem from="1582868465677" duration="576000" />
+      <workItem from="1584454816144" duration="780000" />
+      <workItem from="1584795684362" duration="44000" />
     </task>
     <task id="LOCAL-00001" summary="tijiao">
       <created>1582336309824</created>
@@ -139,16 +121,23 @@
       <option name="project" value="LOCAL" />
       <updated>1582336309824</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="tijiao">
+      <created>1584454863980</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1584454863980</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2895000" />
+    <option name="totallyTimeSpent" value="3719000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="2062" height="1126" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25249502" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25748503" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="UI Designer" order="3" />
@@ -164,10 +153,10 @@
       <window_info anchor="bottom" id="FindBugs-IDEA" order="7" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.32955715" />
       <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info active="true" anchor="bottom" id="Event Log" order="10" sideWeight="0.500998" side_tool="true" visible="true" weight="0.13608247" />
       <window_info anchor="bottom" id="Problems" order="11" />
       <window_info anchor="bottom" id="Database Changes" order="12" />
-      <window_info active="true" anchor="bottom" id="Version Control" order="13" visible="true" weight="0.1371134" />
+      <window_info anchor="bottom" id="Version Control" order="13" sideWeight="0.499002" visible="true" weight="0.13608247" />
       <window_info anchor="bottom" id="Alibaba Cloud View" order="14" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />

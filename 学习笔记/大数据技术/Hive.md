@@ -1,0 +1,971 @@
+# Hive
+
+## 1. Hive入门
+
+> - `Hive`是由`Facebook`开源用于解决海量结构化日志的数据统计；
+> - `Hive`是基于`Hadoop`的数据仓库工具，可以将结构化的数据映射为一张表，并提供SQL查询功能；
+> - `Hive`处理的数据存储在`HDFS`中；
+> - `Hive`分析数据底层的实现是`MapReduce`；
+> - `Hive`生成的执行程序最终会运行在`Yarn`中；
+>
+> ![img](file:///C:/Users/10838/AppData/Local/Temp/msohtmlclip1/01/clip_image002.png)
+
+### 1.1 Hive优缺点
+
+#### 1.1.1 Hive优势
+
+> - 操作接口采用类SQL语法，提供快速开发的能力；
+> - 避免了去写MapReduce，减少开发人员学习成本；
+> - Hive的执行延迟比较高，因此Hive常用于数据分析，对实时性要求不高的场合；
+> - Hive支持用户自定义函数，用户可以根据自己的需求来实现自己的函数。
+
+#### 1.1.2 Hive缺点
+
+> - Hive的HQL表达能力有限
+>   - 迭代式算法无法表达
+>   - 数据挖掘方面不擅长
+>
+> - Hive的效率比较低
+>   - Hive自动生成的MapReduce作业，通常情况下不够智能化
+>   - Hive调优比较困难，粒度较粗
+
+### 1.2 Hive架构原理
+
+> ![1586086949845](assets/1586086949845.png)
+>
+> - 用户接口：`Client`
+>
+>   - `CLI(hive shell)`、`JDBC/ODBC`、`WEBUI(浏览器访问hive)`；
+>
+> - 元数据：`Metastore`
+>
+>   - 元数据包括：表名、表所述的数据库(默认数据库是default)，标的拥有者、列/分区字段、标的类型(是否是外部表)、表的数据所在目录等；
+>   - 默认存储在自带的derby数据库中，推荐使用MySQL存储Metastore；
+>
+> - Hadoop
+>
+>   - 使用HDFS进行存储，使用MapReduce进行计算；
+>
+> - 驱动器：Driver
+>
+>   - 解析器(SQL Parser)：将SQL字符串进行转换成抽象语法树AST，这一步一般都用第三方工具库完成，比如antlr；对AST进行语法分析，比如表是否存在，字段是否存在，SQL语义是否错误；
+>   - 编译器(Physical Plan)：将AST编译生成逻辑执行计划；
+>   - 优化器(Query Optimizer)：对逻辑执行计划进行优化；
+>   - 执行器(Execution)：把逻辑执行计划转换成可以运行的物理计划，也就是转换为MR/Spark；
+>
+>   ![img](file:///C:/Users/10838/AppData/Local/Temp/msohtmlclip1/01/clip_image002.png)
+
+> 流程总结：
+>
+> ​	**Hive通过给用户提供一系列交互接口，接收到用户的指令(SQL)，使用自己的Driver，结合元数据(MetaStore)，将这些执行翻译成MapReduce，提交到Hadoop中执行，最后，将执行返回的结果输出到用户交互接口中**；
+
+### 1.3 Hive与数据库
+
+> ​	Hive采用了类似SQL的查询语言`HQL(Hive Query Language)`，因此很容易将Hive理解为数据库；从结构上来看，Hive和数据库除了拥有类似的查询语言，再无类似之处；
+
+#### 1.3.1 查询语言
+
+> ​	由于SQL被广泛应用于数据仓库中，因此针对Hive的特性设计了类SQL的查询语言HQL；
+
+#### 1.3.2 数据存储位置
+
+> ​	Hive是建立在Hadoop之上的，所以Hive所有的数据都是存储在HDFS中进行保存的；数据库则可以将数据保存在块设备或者本地文件系统中；
+
+####  1.3.3 数据更新
+
+> ​	Hive是针对 **数据仓库** 应用设计的，而 **数据仓库的内容是读多写少**；因此，在 **Hive中不建议对数据的改写，所有的数据都是在加载的时候确定好的；**而数据库中的数据通常是需要经常进行修改的，因此可以使用 INSERT INTO …  VALUES 添加数据，使用 UPDATE … SET修改数据。
+
+#### 1.3.4 索引
+
+> ​	Hive在加载数据的过程中不会对数据进行任何处理，甚至不会对数据进行扫描；因此没有对数据的某些key建立索引；Hive访问数据库中特定值，需要暴力扫描整张表；但是Hive是基于MapReduce的，所以能够并行扫描所有表，实现高效特性；
+
+#### 1.3.5 执行
+
+> ​	Hive中大多数查询的执行是通过Hadoop提供的MapReduce来实现的；
+
+#### 1.3.6 执行延迟
+
+> ​	Hive 在查询数据的时候，由于没有索引，需要扫描整个表，因此延迟较高。另外一个导致 Hive 执行延迟高的因素是 MapReduce框架。由于MapReduce 本身具有较高的延迟，因此在利用MapReduce 执行Hive查询时，也会有较高的延迟。
+
+#### 1.3.7 可扩展性
+
+> ​	Hive与Hadoop的扩展性是一致的，扩展性高；
+
+#### 1.3.8 数据规模
+
+> 数据规模是基于MapReduce做的，所以能够实现大规模数据的支持；
+
+## 2.Hive安装
+
+### 2.1 文档地址
+
+> 1．Hive官网地址
+>
+> http://hive.apache.org/
+>
+> 2．文档查看地址
+>
+> https://cwiki.apache.org/confluence/display/Hive/GettingStarted
+>
+> 3．下载地址
+>
+> http://archive.apache.org/dist/hive/
+>
+> 4．github地址
+>
+> https://github.com/apache/hive
+
+### 2.2 Hive 安装部署
+
+#### 2.2.1 单机版Hive
+
+> - 一步：上传apache-hive-1.2.1-bin.tar.gz文件到linux服务器；
+>
+> - 二步：对该文件进行解压； 
+>
+> - 第三步：重命名apache-hive-1.2.1-bin文件夹为hive；
+>
+> - 第四步：配置`hive-env.sh`文件：
+>
+>   - 配置`Hadoop_home`路径地址：
+>
+>   ```
+>   export HADOOP_HOME=/opt/software/hadoop
+>   ```
+>
+>   - 配置`Hive_Conf_Dir`路径：
+>
+>   ```
+>   export HIVE_CONF_DIR=/opt/module/hive/conf
+>   ```
+>
+> - 启动Hive：进入bin目录，执行
+>
+>   ```
+>   ./hive
+>   ```
+
+#### 2.2.2 使用方式
+
+> - 创建表：
+>
+> ```sql
+> create table student(id int, name string);
+> ```
+>
+> - 插入一条数据：
+>
+> ```sql
+> insert into student values(1,'zsl');
+> ```
+>
+> - 加载文件中的数据：
+>
+> ```hql
+> load data local inpath '/home/zsl/data.txt' into table student;
+> ```
+>
+> - 查询一条数据：
+>
+> ```sql
+> select * from student where id = 1;
+> ```
+>
+> - 前往文件系统HDFS中查看数据；
+>
+>   - 在 /tmp目录中能够查看部分日志信息；如果进入该目录里权限报错，则：
+>
+>   ```shell
+>   hdfs dfs -chmod 777 /tmp
+>   ```
+>
+>   - 在 /user/hive/warehouse/student 能够看见存储的数据信息；
+
+> 将外部文件加载到hive表中；
+>
+> - 创建表，指定分割符；
+>
+> ```sql
+> create table stu(id int, name string) row format delimited fields terminated by '\t';
+> ```
+>
+> - 加载本地文件数据到表中；
+>
+> ```sql
+> load data local inpath '/home/zsl/data.txt' into table stu;
+> ```
+>
+> 
+
+> - 显示数据库：
+>
+> ```
+> show databases;
+> ```
+>
+> - 使用default数据库；
+>
+> ```
+> use default;
+> ```
+>
+> - 删除表；
+>
+> ```
+> drop table student;
+> ```
+
+#### 2.2.3 集群版Hive
+
+> - 必须启动hdfs和yarn
+>   - sbin/start-dfs.sh
+>
+>   - sbin/start-yarn.sh
+>
+> - 在HDFS上创建/tmp和/user/hive/warehouse两个目录并修改他们的同组权限可写
+>
+>   - bin/hadoop fs -mkdir /tmp
+>
+>   - bin/hadoop fs -mkdir -p /user/hive/warehouse
+>
+>   - bin/hadoop fs -chmod g+w /tmp
+>   - bin/hadoop fs -chmod g+w /user/hive/warehouse
+
+#### 2.2.4 Hive连接MySQL
+
+> ​	Hive默认数据库为derby数据库，效率低，单连接模式，所以需要切换为MySQL数据库；
+
+> - 第一步：将`mysql-connector-java-5.1.44-bin.jar`文件拷贝到 hive/lib 文件夹中；
+> - 第二步：在 hive/conf 目录添加配置文件`hive-site.xml`：
+>
+> ```xml
+> <?xml version="1.0"?>
+> <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+> <configuration>
+> 	<property>
+> 	  <name>javax.jdo.option.ConnectionURL</name>
+> 	  <value>jdbc:mysql://hadoop102:3306/metastore?createDatabaseIfNotExist=true</value>
+> 	  <description>JDBC connect string for a JDBC metastore</description>
+> 	</property>
+> 
+> 	<property>
+> 	  <name>javax.jdo.option.ConnectionDriverName</name>
+> 	  <value>com.mysql.jdbc.Driver</value>
+> 	  <description>Driver class name for a JDBC metastore</description>
+> 	</property>
+> 
+> 	<property>
+> 	  <name>javax.jdo.option.ConnectionUserName</name>
+> 	  <value>root</value>
+> 	  <description>username to use against metastore database</description>
+> 	</property>
+> 
+> 	<property>
+> 	  <name>javax.jdo.option.ConnectionPassword</name>
+> 	  <value>123456</value>
+> 	  <description>password to use against metastore database</description>
+> 	</property>
+> </configuration>
+> 
+> ```
+>
+> - 第三步：启动hive即可；
+> - 如果启动失败，则重启虚拟机，并重启hadoop集群，即可；
+
+## 3. HiveJDBC连接
+
+### 3.1 连接方式
+
+> - 第一步：打开一个窗口，启动hiveserver2；
+>
+> ```
+> bin/hiveserver2
+> ```
+>
+> - 第二步：打开另外一个窗口，启动beeline；
+>
+> ```
+> bin/beeline
+> ```
+>
+> - 第三步：在beeline窗口中连接hive；
+>
+> ```
+> !connect jdbc:hive2://hadoop102:10000
+> ```
+>
+> - 第四步：输入用户名，默认用户名是 创建hive的用户名；
+>
+> - 第五步：输入密码，默认是为空，直接回车即可；
+>
+> ```
+> beeline> !connect jdbc:hive2://hadoop102:10000（回车）
+> Connecting to jdbc:hive2://hadoop102:10000
+> Enter username for jdbc:hive2://hadoop102:10000: atguigu（回车）
+> Enter password for jdbc:hive2://hadoop102:10000: （直接回车）
+> Connected to: Apache Hive (version 1.2.1)
+> Driver: Hive JDBC (version 1.2.1)
+> Transaction isolation: TRANSACTION_REPEATABLE_READ
+> 0: jdbc:hive2://hadoop102:10000> show databases;
+> +----------------+--+
+> | database_name  |
+> +----------------+--+
+> | default        |
+> | hive_db2       |
+> +----------------+--+
+> ```
+
+### 3.2 Hive交互命令
+
+> - `bin/hive --help`  查看hive后面参数；
+>
+>   - `-e`：在命令行里面执行SQL，不会进入交互模式；
+>
+>   ```
+>   ./hive -e "select * from stu;"
+>   ```
+>
+>   - `-f`：将SQL写在一个文件中，可以运行文件中的SQL，不会进入交互模式；
+>
+>   ```
+>   ./hive -f /home/hive1.hql
+>   ```
+
+### 3.3 查看hive数据库与表头
+
+> ​	修改`hive-site.xml`文件，添加如下内容：
+>
+> ```
+> <property>
+> 	<name>hive.cli.print.header</name>
+> 	<value>true</value>
+> </property>
+> 
+> <property>
+> 	<name>hive.cli.print.current.db</name>
+> 	<value>true</value>
+> </property>
+> 
+> ```
+>
+> 将会显示数据库名，以及每次查询的表头；
+
+### 3.4 Hive运行日志
+
+> - Hive默认运行日志存放在`/tmp/zsl/hive.log`文件夹中；
+> - 修改hive默认log日志存放路径：将conf/hive-log4j.properties.template文件从命名为conf/hive-log4j.properties文件，并修改：
+>
+> ```
+> hive.log.dir=/opt/software/hive/logs
+> ```
+
+### 3.5 Hive参数配置
+
+> - 默认配置文件：`hive-default.xml`文件；
+> - 用户自定义配置文件：`hive-site.xml`文件，可用于覆盖默认配置文件属性；
+> - 命令行参数方式设置属性：启动Hive时，可以在命令行添加`-hiveconf
+>   param=value`来设定参数，例如：
+>
+> ```
+> bin/hive -hiveconf mapred.reduce.tasks=10;
+> ```
+>
+> - 在hive交互界面，查询hive运行时参数：`set mapred.reduce.tasks`；
+>
+> ```
+> hive (default)> set mapred.reduce.tasks;
+> ```
+>
+> - 在Hive交互界面，设置hive运行时参数：
+>
+> ```
+> hive (default)> set mapred.reduce.tasks=100;
+> ```
+
+### 3.6 Hive数据类型
+
+#### 3.6.1 基本数据类型
+
+| Hive数据类型 | java数据类型 | 长度                     | 实例       |
+| ------------ | ------------ | ------------------------ | ---------- |
+| TINYINT      | byte         | 1byte有符号整数          | 20         |
+| SMALINT      | short        | 2byte有符号整数          | 20         |
+| INT          | int          | 4byte有符号整数          | 20         |
+| BIGINT       | long         | 8byte有符号整数          | 20         |
+| BOOLEAN      | boolean      | 布尔类型，true/false     | TRUE/FALSE |
+| FLOAT        | float        | 单精度浮点数             | 3.14159    |
+| DOUBLE       | double       | 双精度浮点数             | 3.14159    |
+| STRING       | string       | 字符系列，可使用单双引号 |            |
+| TIMESTAMP    |              | 时间类型                 |            |
+| BINARY       |              | 字节类型                 |            |
+
+> ​	Hive中的string类型，也就是数据库中的varchar类型，但是无法设置字符串长度，理论最多存放2GB字符数；
+
+#### 3.6.2 集合数据类型
+
+| 数据类型 | 描述                                                         | 语法示例 |
+| -------- | ------------------------------------------------------------ | -------- |
+| STRUCT   | 类似于c语言的struct都可以通过“点”符号访问元素内容。例如，如果某个列的数据类型是STRUCT{first STRING, last STRING},那么第1个元素可以通过字段.first来引用。 | struct() |
+| MAP      | MAP是一组键-值对元组集合，使用数组表示法可以访问数据。例如，如果某个列的数据类型是MAP，其中键->值对是’first’->’John’和’last’->’Doe’，那么可以通过字段名[‘last’]获取最后一个元素 | map()    |
+| ARRAY    | 数组是一组具有相同类型和名称的变量的集合。这些变量称为数组的元素，每个数组元素都有一个编号，编号从零开始。例如，数组值为[‘John’, ‘Doe’]，那么第2个元素可以通过数组名[1]进行引用。 | Array()  |
+
+> ​	Hive存在三种复杂数据类型Array、Map和Struct。Array和Map与java中的Array和Map类似，而Struct与c语言中的Struct类似，封装了一个命名字的字段集合，复杂数据类型允许任意层次的嵌套；
+
+使用实例：创建数据库表：
+
+```hql
+create table test(
+	name string,
+	friends array<string>,
+	children map<string, int>,
+	address struct<street:string, city:string>
+)
+row format delimited fields terminated by ','
+collection items terminated by '_'
+map keys terminated by ':'
+lines terminated by '\n';
+
+```
+
+将数据加载到该表中，数据样例为：
+
+```
+songsong,bingbing_lili,xiao song:18_xiaoxiao song:19,hui long guan_beijing
+yangyang,caicai_susu,xiao yang:18_xiaoxiao yang:19,chao yang_beijing
+```
+
+#### 3.6.3 数据类型转化
+
+> ​	Hive的原子数据类型是可以进行隐式转换的，类似于Java的类型转换，转换规则：
+>
+> - 任何整数类型都可以隐式地转换为一个范围更广的类型，如将INT转换为BIGINT；
+> - 所有整数类型、FLOAT和STRING类型都可以隐式地转换为DOUBLE；
+> - TINYINT、SMALLINT、INT都可以转换为FLOAT；
+> - BOOLEAN类型不可以转换为任何其他类型数据；
+
+#### 3.6.4 CAST转换函数
+
+> 表达式：`CAST(字段 AS 数据类型)`
+>
+> 实例：CAST('1' AS INT)    结果为  1；
+>
+> 错误处理：CAST('X' AS INT)    结果为  null；
+
+##  4. DDL数据定义
+
+### 4.1 创建数据库
+
+> - 创建一个数据库，数据库在HDFS上的默认存储路径是`/user/hive/warehouse/*.db` 的数据库文件系统；
+>
+> ```
+> create database db_hive;
+> ```
+>
+> - 避免要创建的数据库已经存在，使用`if not exists`判断；
+>
+> ```
+> create database if not exists db_hive;
+> ```
+>
+> - 创建一个数据库，指定数据库在HDFS上存放的位置；
+>
+> ```
+> create database db_hive2 location '/db_hive2.db'
+> ```
+
+### 4.2 查询数据库
+
+> - 显示所有数据库列表；
+>
+> ```
+> show databases;
+> ```
+>
+> - 过滤显示查询的数据库列表；
+>
+> ```
+> show databases like 'db_hive*';
+> ```
+>
+> - 显示数据库信息；
+>
+> ```
+> desc database db_hive;
+> ```
+>
+> - 显示数据库详情信息；
+>
+> ```
+> desc database extended db_hive;
+> ```
+>
+> - 使用指定数据库；
+>
+> ```
+> use db_hive
+> ```
+
+### 4.3 修改数据库
+
+> ​	用户可以使用ALTER DATABASE命令为某个数据库的DBPROPERTIES设置键-值对属性值，来描述这个数据库的属性信息。**数据库的其他元数据信息都是不可更改的，包括数据库名和数据库所在的目录位置**。
+>
+> ```
+> alter database db_hive set dbproperties('createtime'='20170830');
+> ```
+
+### 4.4 删除数据库
+
+> - 删除空数据库；
+>
+> ```
+> drop database db_hive2;
+> ```
+>
+> - 如果删除的数据库不存在，可以使用if exists判断；
+>
+> ```
+> drop database if exists db_hive2; 
+> ```
+>
+> - 如果数据库不为空，可使用cascade强制删除；
+>
+> ```
+> drop database db_hive cascade;
+> ```
+
+### 4.5 数据库表
+
+#### 4.5.1 创建表
+
+> ```
+> CREATE [EXTERNAL] TABLE [IF NOT EXISTS] table_name 
+> [(col_name data_type [COMMENT col_comment], ...)] 
+> [COMMENT table_comment] 
+> [PARTITIONED BY (col_name data_type [COMMENT col_comment], ...)] 
+> [CLUSTERED BY (col_name, col_name, ...) 
+> [SORTED BY (col_name [ASC|DESC], ...)] INTO num_buckets BUCKETS] 
+> [ROW FORMAT row_format] 
+> [STORED AS file_format] 
+> [LOCATION hdfs_path]
+> ```
+>
+> - CREATE TABLE 创建一个指定名字的表。如果相同名字的表已经存在，则抛出异常；用户可以用 IF NOT EXISTS 选项来忽略这个异常。
+>
+> - EXTERNAL关键字可以让用户创建一个外部表，在建表的同时指定一个指向实际数据的路径（LOCATION），Hive创建内部表时，会将数据移动到数据仓库指向的路径；若创建外部表，仅记录数据所在的路径，不对数据的位置做任何改变。在删除表的时候，内部表的元数据和数据会被一起删除，而外部表只删除元数据，不删除数据。
+>
+> - COMMENT：为表和列添加注释。
+>
+> - PARTITIONED BY创建分区表;
+>
+> - CLUSTERED BY创建分桶表;
+>
+> - SORTED BY不常用;
+>
+> - ROW FORMAT 
+>
+>   DELIMITED [FIELDS TERMINATED BY char] [COLLECTION ITEMS TERMINATED BY char]
+>
+>   ​        [MAP KEYS TERMINATED BY char] [LINES TERMINATED BY char] 
+>
+>      | SERDE serde_name [WITH SERDEPROPERTIES (property_name=property_value, property_name=property_value, ...)]
+>
+>   用户在建表的时候可以自定义SerDe或者使用自带的SerDe。如果没有指定ROW FORMAT 或者ROW FORMAT DELIMITED，将会使用自带的SerDe。在建表的时候，用户还需要为表指定列，用户在指定表的列的同时也会指定自定义的SerDe，Hive通过SerDe确定表的具体的列的数据。
+>
+> - STORED AS指定存储文件类型;
+>
+>   - 常用的存储文件类型：SEQUENCEFILE（二进制序列文件）、TEXTFILE（文本）、RCFILE（列式存储格式文件）
+>   - 如果文件数据是纯文本，可以使用STORED AS TEXTFILE。如果数据需要压缩，使用 STORED AS SEQUENCEFILE。
+>
+> - LOCATION ：指定表在HDFS上的存储位置。
+>
+> - LIKE允许用户复制现有的表结构，但是不复制数据。
+
+#### 4.5.2 管理表
+
+> ​	默认创建的表都是所谓的管理表，也被称为 **内部表**；该表是被Hive控制着生命周期的；hive默认情况下是将这些表的数据存储在`/user/hive/warehouse/`路径下；
+
+> - 创建表：
+>
+> ```sql
+> create table if not exists student2(
+> id int, name string
+> )
+> ```
+>
+> - 根据查询结果创建表；
+>
+> ```
+> create table if not exists student3 as select id, name from student;
+> ```
+>
+> - 根据已经存在的表结构创建表；
+>
+> ```
+> create table if not exists student4 like student;
+> ```
+>
+> - 查询表的类型；
+>
+> ```
+> desc formatted student2;
+> ```
+
+#### 4.5.3 外部表
+
+> ​	因为表是外部表，所以Hive并非认为其完全拥有这份数据。**删除该表并不会删除掉这份数据，不过描述表的元数据信息会被删除掉。**
+
+> **管理表和外部表的使用场景**：每天将收集到的网站日志定期流入HDFS文本文件。在外部表（原始日志表）的基础上做大量的统计分析，用到的中间表、结果表使用内部表存储，数据通过SELECT+INSERT进入内部表。
+
+> 创建外部表：
+>
+> ```
+> create external table if not exists default.dept(
+> deptno int,
+> dname string,
+> loc int
+> )
+> row format delimited fields terminated by '\t';
+> 
+> ```
+>
+> ```
+> create external table if not exists default.emp(
+> empno int,
+> ename string,
+> job string,
+> mgr int,
+> hiredate string, 
+> sal double, 
+> comm double,
+> deptno int)
+> row format delimited fields terminated by '\t';
+> 
+> ```
+
+####  4.5.4 外部表与内部表切换
+
+> - 外部表：`desc formatted dept;`
+>
+> ```
+> Table Type:             EXTERNAL_TABLE
+> ```
+>
+> - 内部表：`desc formatted test;`
+>
+> ```
+> Table Type:             MANAGED_TABLE  
+> ```
+>
+> - 外部表改换为内部表；
+>
+> ```
+> alter table student2 set tblproperties('EXTERNAL'='FALSE');
+> ```
+>
+> - 内部表改换为外部表；
+>
+> ```
+> alter table student2 set tblproperties('EXTERNAL'='TRUE');
+> ```
+
+### 4.6 分区表
+
+> ​	分区表实际上就是对饮一个HDFS文件系统上的独立的文件夹，该文件夹下是该分区所有的数据文件；Hive中的分区就是分目录；将一个大的数据集根据业务需要分割成小的数据集，在查询时通过WHERE字句中的表达式选择查询所需要的指定的分区，提高查询效率；
+
+#### 4.6.1 创建分区表
+
+> - 创建分区表；
+>
+> ```
+> create table dept_partition(
+> deptno int, dname string, loc string
+> )
+> partitioned by (month string)
+> row format delimited fields terminated by '\t';
+> ```
+>
+> - 根据分区加载数据；
+>
+> ```
+> load data local inpath '/opt/module/datas/dept.txt' into table default.dept_partition partition(month='201709');
+> ```
+
+#### 4.6.2 查询分区表
+
+> - 查询所有分区数据；
+>
+> ```
+> select * from dedpt_partition;
+> ```
+>
+> - 查询单个分区；
+>
+> ```
+> select * from dept_partition where month='202003';
+> ```
+>
+> - 查询多个分区；
+>
+> ```
+> select * from dept_partition where month='202003' 
+> union 
+> select * from dept_partition where month='202004;
+> ```
+>
+> - 查看分区表中存在多个分区；
+>
+> ```
+> show partitions dept_partition;
+> ```
+>
+> - 查看分区表结构；
+>
+> ```
+> desc formatted dept_partition;
+> ```
+
+#### 4.6.3 增加分区
+
+> - 创建单个分区；
+>
+> ```
+> alter table dept_partition add partition(month='201706') ;
+> ```
+>
+> - 同时创建多个分区；
+>
+> ```
+> alter table dept_partition add partition(month='201705') partition(month='201704');
+> ```
+
+#### 4.6.4 删除分区
+
+> - 删除单个分区；
+>
+> ```
+> alter table dept_partition drop partition (month='201704');
+> ```
+>
+> - 同时删除多个分区；
+>
+> ```
+> alter table dept_partition drop partition (month='201705'), partition (month='201706');
+> ```
+
+#### 4.6.5 分区表注意事项
+
+> - 创建二级分区表；
+>
+> ```
+> create table dept_partition2(
+>                deptno int, dname string, loc string
+>                )
+>                partitioned by (month string, day string)
+>                row format delimited fields terminated by '\t';
+> ```
+>
+> - 二级分区数据加载：
+>
+> ```
+> load data local inpath '/opt/module/datas/dept.txt' into table
+>  default.dept_partition2 partition(month='201709', day='13');
+> ```
+>
+> - 查询二级分区中的数据；
+>
+> ```
+> select * from dept_partition2 where month='201709' and day='13';
+> ```
+
+#### 4.6.6 加载数据到分区中
+
+> - 方式一：上传数据后修复；
+>
+>   - 创建文件夹：`dfs -mkdir -p
+>      /user/hive/warehouse/dept_partition2/month=201709/day=12;`
+>   - 将数据加载进入到该目录中：`dfs -put /opt/module/datas/dept.txt  /user/hive/warehouse/dept_partition2/month=201709/day=12;`
+>
+>   - 执行数据修复命令：`msck repair table dept_partition2;`
+>
+>   - 查询数据：`select * from dept_partition2 where month='201709'   and day='12';`
+>
+> - 方式二：上传数据后添加分区；
+>
+>   - 创建文件夹：`dfs -mkdir -p  /user/hive/warehouse/dept_partition2/month=201709/day=11;`
+>   - 执行添加分区：`alter table dept_partition2 add partition(month='201709',day='11');`
+>   - 查询数据：`select * from dept_partition2 where month='201709' and day='11';`
+>
+> - 方式三：创建文件夹之后load数据到分区中；
+>   - 创建文件夹：`dfs -mkdir -p /user/hive/warehouse/dept_partition2/month=201709/day=10;`
+>   - 上传数据：`load data local inpath '/opt/module/datas/dept.txt' into table dept_partition2 partition(month='201709',day='10');`
+>   - 查询数据：`select * from dept_partition2 where month='201709' and day='11';`
+
+### 4.7 修改表
+
+#### 4.7.1 重命名表
+
+> `ALTER TABLE table_name RENAME TO new_table_name;`
+
+#### 4.7.2 增加/修改/替换列信息
+
+> - 更新列：
+>
+> ```
+> ALTER TABLE table_name CHANGE [COLUMN] col_old_name col_new_name column_type [COMMENT col_comment] [FIRST|AFTER column_name]
+> ```
+>
+> - 增加列；
+>
+> ```
+> ALTER TABLE table_name ADD COLUMNS (col_name data_type [COMMENT col_comment], ...) 
+> ```
+>
+> - 替换列；
+>
+> ```
+> ALTER TABLE table_name REPLACE COLUMNS (col_name data_type [COMMENT col_comment], ...) 
+> ```
+
+> 实例：
+>
+> （1）查询表结构
+>
+> hive> desc dept_partition;
+>
+> （2）添加列
+>
+> hive (default)> alter table dept_partition add columns(deptdesc string);
+>
+> （3）查询表结构
+>
+> hive> desc dept_partition;
+>
+> （4）更新列
+>
+> hive (default)> alter table dept_partition change column deptdesc desc int;
+>
+> （5）查询表结构
+>
+> hive> desc dept_partition;
+>
+> （6）替换列
+>
+> hive (default)> alter table dept_partition replace columns(deptno string, dname
+>
+>  string, loc string);
+>
+> （7）查询表结构
+>
+> hive> desc dept_partition;
+
+### 4.8 删除表
+
+> drop table dept_partition;
+
+## 5. DML数据操作
+
+### 5.1 数据导入
+
+#### 5.1.1 向表中装载数据(load)
+
+> 语法：`load data [local] inpath '本地路径' overwrite | into table 表名 [partition(key1=v1,...)]`
+>
+> - load data:表示加载数据
+>
+> - local:表示从本地加载数据到hive表；否则从HDFS加载数据到hive表
+>
+> - inpath:表示加载数据的路径
+>
+> - overwrite:表示覆盖表中已有数据，否则表示追加
+>
+> - into table:表示加载到哪张表
+>
+> - partition:表示上传到指定分区
+
+> 实例一：本地加载文件到表中；
+>
+> ```
+> //创建表：
+> create table student(id string, name string) row format delimited fields terminated by '\t';
+> ```
+>
+> ```
+> //加载本地中的文件
+> load data local inpath '/home/zsl/data.txt' into table student ;
+> ```
+>
+> 实例二：将hdfs中的文件加载到表中；
+>
+> ```
+> //上传文件到hdfs
+> hdfs dfs -put /home/zsl/data.txt /user
+> ```
+>
+> ```
+> //加载hdfs中的文件
+> load data inpath '/user/data.txt' into table student ; 
+> ```
+
+#### 5.1.2查询并创建表
+
+> ​	将查询的结果写入一张新的表中；
+>
+> ```
+> create table if not exists student3 as select id, name from student;
+> ```
+
+#### 5.1.3 指定Location加载数据路径
+
+>  create table if not exists student5( id int,  name string) row format delimited fields terminated by '\t'  location '/user/hive/warehouse/student5';
+
+#### 5.1.4 Import数据到指定Hive表中
+
+> import table student partition(month='202003') from '/user/hive/warehouse/export/student'；
+
+### 5.2 数据导入
+
+#### 5.2.1 Insert导出
+
+> - 将查询的结果导出到本地；
+>
+> ```
+> insert overwrite local directory '/opt/module/datas/export/student'
+>             select * from student;
+> ```
+>
+> - 将查询的结果格式化导出到本地；
+>
+> ```
+> insert overwrite local directory '/opt/module/datas/export/student1'
+>  ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t' select * from student;
+> ```
+>
+> - 将查询的结果导出到HDFS中；
+>
+> ```
+> insert overwrite directory '/user/atguigu/student2' ROW FORMAT DELIMITED FIELDS TERMINATED BY '\t'  select * from student;
+> ```
+
+#### 5.2.2 Hadoop命令导出
+
+> ```
+> dfs -get /user/hive/warehouse/student/month=201709/000000_0
+> /opt/module/datas/export/student3.txt;
+> ```
+
+#### 5.2.3 Export导出到HDFS中
+
+> ```
+> export table default.student to '/user/hive/warehouse/export/student';
+> ```
+
+#### 5.2.4 Hive Shell导出
+
+> ```
+> bin/hive -e 'select * from default.student;' > /opt/module/datas/export/student4.txt;
+> ```
+
+### 5.3 清空表
+
+> `truncate table student;`
+

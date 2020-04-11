@@ -1,5 +1,9 @@
 # RocketMQ中间件
 
+> 下载地址：
+>
+> <http://rocketmq.apache.org/release_notes/release-notes-4.6.0/>
+
 ## 一、基本介绍
 
 ### 1、简介
