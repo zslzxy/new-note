@@ -1,4 +1,4 @@
-# Hive
+# `Hive
 
 ## 1. Hive入门
 
@@ -8,7 +8,6 @@
 > - `Hive`分析数据底层的实现是`MapReduce`；
 > - `Hive`生成的执行程序最终会运行在`Yarn`中；
 >
-> ![img](file:///C:/Users/10838/AppData/Local/Temp/msohtmlclip1/01/clip_image002.png)
 
 ### 1.1 Hive优缺点
 
@@ -969,3 +968,582 @@ yangyang,caicai_susu,xiao yang:18_xiaoxiao yang:19,chao yang_beijing
 
 > `truncate table student;`
 
+## 6. Hive查询
+
+### 6.1 查询模板
+
+```
+[WITH CommonTableExpression (, CommonTableExpression)*]    (Note: Only available starting with Hive 0.13.0)
+SELECT [ALL | DISTINCT] select_expr, select_expr, ...
+  FROM table_reference
+  [WHERE where_condition]
+  [GROUP BY col_list]
+  [ORDER BY col_list]
+  [CLUSTER BY col_list
+    | [DISTRIBUTE BY col_list] [SORT BY col_list]
+  ]
+ [LIMIT [offset,] rows]
+```
+
+### 6.2 基本查询
+
+#### 6.2.1 基本查询示例
+
+> - 全表查询：
+>
+> ```sql
+> select * from emp;
+> ```
+>
+> - 特定列查询；
+>
+> ```sql
+> select emp_id, emp_name from emp;
+> ```
+>
+> Hive查询特征：
+>
+> - SQL语言**不区分大小写**；
+> - SQL可以卸载一行或者多行；
+> - 关键字不能被缩写也不能被分行；
+> - 各子句一般要分行写；
+> - 使用缩进提高语句可读性；
+
+#### 6.2.2 列别名定义
+
+> Hive列别名特征：
+>
+> - 重命名一个列；
+> - 便于计算；
+> - **紧跟列名，也可以在列名和别名之间加入关键字 'AS'；**
+> - 示例：
+>
+> ```sql
+> select ename AS name, deptno no from emp;
+> ```
+
+#### 6.2.3 算术运算符
+
+| 运算符 | 描述           |
+| ------ | -------------- |
+| A+B    | A与B相加       |
+| A-B    | A减去B         |
+| A*B    | A与B相乘       |
+| A/B    | A除以B         |
+| A%B    | A对B取余       |
+| A&B    | A与B按位取与   |
+| A\|B   | A与B按位取或   |
+| A^B    | A与B按位取异或 |
+| -A     | A按位取反      |
+
+> 实战案例：
+>
+> ```
+> select sal +1 from emp;
+> ```
+
+#### 6.2.4 Hive常用函数
+
+> - 求总行数(`count`)
+>
+> ```
+> select count(*) cnt from emp;
+> ```
+>
+> - 求最大值(`max`)
+>
+> ```
+> select max(sal) max_sal from emp;
+> ```
+>
+> - 求最小值(`min`)
+>
+> ```
+> select min(sal) min_sal from emp;
+> ```
+>
+> - 求和(`sum`)
+>
+> ```
+> select sum(sal) sum_sal from emp;
+> ```
+>
+> - 求平均值(`svg`)
+>
+> ```
+> select avg(sal) avg_sal from emp;
+> ```
+
+#### 6.2.5 Limit语句
+
+> - 典型的查询会返回多行数据。LIMIT子句用于限制返回的行数。
+>
+> ```
+> select * from emp limit 5;
+> ```
+
+### 6.3 Where语句
+
+> - 使用`WHERE`语句，将不满足条件的行过滤掉；
+> - `WHERE`子句紧随`FROM`子句之后；
+
+#### 6.3.1 WHERE中比较运算符
+
+| 操作符                  | 支持的数据类型 | 描述                                                         |
+| ----------------------- | -------------- | ------------------------------------------------------------ |
+| A=B                     | 基本数据类型   | 如果A等于B则返回TRUE，反之返回FALSE                          |
+| A<=>B                   | 基本数据类型   | 如果A和B都为NULL，则返回TRUE，其他的和等号（=）操作符的结果一致，如果任一为NULL则结果为NULL |
+| A<>B, A!=B              | 基本数据类型   | A或者B为NULL则返回NULL；如果A不等于B，则返回TRUE，反之返回FALSE |
+| A<B                     | 基本数据类型   | A或者B为NULL，则返回NULL；如果A小于B，则返回TRUE，反之返回FALSE |
+| A<=B                    | 基本数据类型   | A或者B为NULL，则返回NULL；如果A小于等于B，则返回TRUE，反之返回FALSE |
+| A>B                     | 基本数据类型   | A或者B为NULL，则返回NULL；如果A大于B，则返回TRUE，反之返回FALSE |
+| A>=B                    | 基本数据类型   | A或者B为NULL，则返回NULL；如果A大于等于B，则返回TRUE，反之返回FALSE |
+| A [NOT] BETWEEN B AND C | 基本数据类型   | 如果A，B或者C任一为NULL，则结果为NULL。如果A的值大于等于B而且小于或等于C，则结果为TRUE，反之为FALSE。如果使用NOT关键字则可达到相反的效果。 |
+| A IS NULL               | 所有数据类型   | 如果A等于NULL，则返回TRUE，反之返回FALSE                     |
+| A IS NOT NULL           | 所有数据类型   | 如果A不等于NULL，则返回TRUE，反之返回FALSE                   |
+| IN(数值1, 数值2)        | 所有数据类型   | 使用 IN运算显示列表中的值                                    |
+| A [NOT] LIKE B          | STRING 类型    | B是一个SQL下的简单正则表达式，如果A与其匹配的话，则返回TRUE；反之返回FALSE。B的表达式说明如下：‘x%’表示A必须以字母‘x’开头，‘%x’表示A必须以字母’x’结尾，而‘%x%’表示A包含有字母’x’,可以位于开头，结尾或者字符串中间。如果使用NOT关键字则可达到相反的效果。 |
+| A RLIKE B, A REGEXP B   | STRING 类型    | B是一个正则表达式，如果A与其匹配，则返回TRUE；反之返回FALSE。匹配使用的是JDK中的正则表达式接口实现的，因为正则也依据其中的规则。例如，正则表达式必须和整个字符串A相匹配，而不是只需与其字符串匹配。 |
+
+#### 6.3.2 WHERE中的Like与RLike
+
+> - 使用`LIKE`运算选择类似的值；
+> - 选择条件可以包含字符或者数字：
+>   - `%`：代表零个或者多个字符；
+>   - `_`：代表一个字符；
+> - `RLIKE`子句是Hive中这个功能的一个扩展，可以通过Java中的正则表达式实现匹配模式；
+> - 实战案例：
+>
+> ```
+> （1）查找以2开头薪水的员工信息
+> hive (default)> select * from emp where sal LIKE '2%';
+> （2）查找第二个数值为2的薪水的员工信息
+> hive (default)> select * from emp where sal LIKE '_2%';
+> （3）查找薪水中含有2的员工信息
+> hive (default)> select * from emp where sal RLIKE '[2]';
+> ```
+
+#### 6.3.3 WHERE逻辑运算符
+
+| 操作符 | 含义   |
+| ------ | ------ |
+| AND    | 逻辑与 |
+| OR     | 逻辑或 |
+| NOT    | 逻辑否 |
+
+> 实战案例：
+>
+> ```
+> （1）查询薪水大于1000，部门是30
+> hive (default)> select * from emp where sal>1000 and deptno=30;
+> （2）查询薪水大于1000，或者部门是30
+> hive (default)> select * from emp where sal>1000 or deptno=30;
+> （3）查询除了20部门和30部门以外的员工信息
+> hive (default)> select * from emp where deptno not IN(30, 20);
+> ```
+
+### 6.4 分组
+
+#### 6.4.1 Group by 分组
+
+> ​	`GROUP BY`语句通常会和聚合函数一起使用，按照一个或者多个队列结果进行分组，然后对每个组执行聚合操作；
+>
+> 实战案例：
+>
+> ```
+> （1）计算emp表每个部门的平均工资
+> hive (default)> select t.deptno, avg(t.sal) avg_sal from emp t group by t.deptno;
+> （2）计算emp每个部门中每个岗位的最高薪水
+> hive (default)> select t.deptno, t.job, max(t.sal) max_sal from emp t group by t.deptno, t.job;
+> ```
+
+#### 6.4.2 Having语句
+
+> - where针对表中的列发挥作用，查询数据；having针对查询结果中的列发挥作用，筛选数据。
+>
+> - where后面不能写分组函数，而having后面可以使用分组函数。
+>
+> - having只用于group by分组统计语句。
+>
+> 实战案例：
+>
+> ```
+> //求每个部门的平均薪水大于2000的部门
+> 求每个部门的平均工资
+> hive (default)> select deptno, avg(sal) from emp group by deptno;
+> //求每个部门的平均薪水大于2000的部门
+> hive (default)> select deptno, avg(sal) avg_sal from emp group by deptno having avg_sal > 2000;
+> ```
+
+### 6.5 Join连接
+
+#### 6.5.1 等值连接Join
+
+> Hive支持通常的SQL JOIN语句，但是**只支持等值连接**，不支持非等值连接；
+>
+> 实例：
+>
+> ```sql
+> select e.empno, e.empname,d.deptname from emp e join dept d on e.deptno = d.deptno;
+> ```
+
+#### 6.5.2 表别名
+
+> - 使用表别名可以简化查询；
+> - 使用表名前缀可以提高执行效率；
+
+#### 6.5.3 内连接 - join
+
+> 简介：**只有进行连接的两个表中都存在与链接条件相匹配的数据才会被保留；**
+>
+> ```
+> select e.empno, e.ename, d.deptno from emp e join dept d on e.deptno
+>  = d.deptno;
+> ```
+
+#### 6.5.4 左外连接 - left join
+
+> 简介：**JOIN操作符左边表中符合WHERE子句的所有记录将会被返回；**
+>
+> ```
+> select e.empno, e.ename, d.deptno from emp e left join dept d on e.deptno
+>  = d.deptno;
+> ```
+
+#### 6.5.5 右外连接 - right join
+
+> 简介：**JOIN操作符右边表中符合WHERE子句的所有记录将会被返回；**
+>
+> ```
+> select e.empno, e.ename, d.deptno from emp e right join dept d on e.deptno
+>  = d.deptno;
+> ```
+
+#### 6.5.6 满外连接 - full join
+
+> 简介：将会返回所有表中符合WHERE语句条件的所有记录，如果任意一表的指定字段美哦与符合条件的值的话，就使用NULL进行代替；
+>
+> ```
+>  select e.empno, e.ename, d.deptno from emp e full join dept d on e.deptno
+>  = d.deptno;
+> ```
+
+#### 6.5.7 多表连接
+
+> **连接 n个表，至少需要n-1个连接条件**。例如：连接三个表，至少需要两个连接条件。
+>
+> ```
+> SELECT e.ename, d.deptno, l. loc_name
+> FROM   emp e 
+> JOIN   dept d
+> ON     d.deptno = e.deptno 
+> JOIN   location l
+> ON     d.loc = l.loc;
+> ```
+>
+> ​	大多数情况下，Hive会对每对JOIN连接对象启动一个MapReduce任务。本例中会首先启动一个MapReduce job对表e和表d进行连接操作，然后会再启动一个MapReduce job将第一个MapReduce job的输出和表l;进行连接操作。
+
+#### 6.5.8 笛卡尔积
+
+> 笛卡尔积产生的条件：
+>
+> - 省略连接条件；
+> - 连接条件无效；
+> - 所有表中的所有行相互连接；
+>
+> ```
+> select empno,deptno from emp, dept;
+> ```
+
+### 6.6 Hive排序
+
+#### 6.6.1 全局排序(Order by)
+
+> **Order by：一个全局排序，相当于一个Reducer**；
+>
+> - `ASC(ascend)`：升序，默认值；
+> - `DESC(descend)`：降序，默认值；
+>
+> 注意：
+>
+> - Order by子句写在Select语句的结尾；
+
+#### 6.6.2 按照别名排序
+
+> ```
+> select ename, sal*2 twosal from emp order by twosal;
+> ```
+
+#### 6.6.3 多个列进行排序
+
+> ```
+> select ename, deptno, sal from emp order by deptno, sal ;
+> ```
+
+#### 6.6.4 每个MapReduce内部排序(Sort By)
+
+> `Sort by`：每个Reducer内部进行排序，对全局结果集来说不是排序；
+>
+> 实现步骤：
+>
+> - 第一步：设置Reduce执行的个数；
+>
+> ```
+> set napreduce.job.reduces=3;
+> ```
+>
+> - 第二步：查看reduce执行个数是否设置成功；
+>
+> ```
+>  set mapreduce.job.reduces;
+> ```
+>
+> - 第三步：根据部门编号降序查看员工信息；
+>
+> ```
+> select * from emp sort by empno desc;
+> ```
+>
+> - 第四步：可以将查询结果导入到文件中；
+>
+> ```
+> insert overwrite local directory '/opt/module/datas/sortby-result'
+>  select * from emp sort by deptno desc;
+> ```
+
+#### 6.6.5 分区排序(Distribute by)
+
+> - Distribute By：类似MR中partition，进行分区，结合sort by使用。
+>
+> - 注意，Hive要求DISTRIBUTE BY语句要写在SORT BY语句之前。
+>
+> - 对于distribute by进行测试，一定要分配多reduce进行处理，否则无法看到distribute by的效果。
+>
+> 使用案例：
+>
+> ```
+> //第一步：设置reduce个数
+> set mapreduce.job.reduces=3;
+> //第二步：先按照部门编号分区，在根据员工编号排序；
+> insert overwrite local directory '/opt/module/datas/distribute-result' select * from emp distribute by deptno sort by empno desc;
+> ```
+
+#### 6.6.6 Cluster by
+
+> - 当distribute by和sorts by字段相同时，可以使用cluster by方式。
+>
+> - cluster by除了具有distribute by的功能外还兼具sort by的功能。但是排序只能是升序排序，不能指定排序规则为ASC或者DESC。
+>
+> 使用案例：
+>
+> ```
+> //按照部门编号分区，再按照部门编号排序
+> select * from emp cluster by deptno;
+> ```
+
+### 6.7 分桶及抽样查询
+
+#### 6.7.1 分桶表数据存储
+
+> - **分区针对的是数据的存储路径**，**分桶针对的是数据文件**；
+> - 分区是将数据集分节成更加容易管理的若干部分的另一个技术；
+
+#### 6.7.2 分桶表案例
+
+> - 第一步：创建分桶表；
+>
+> ```
+> create table stu_buck(id int, name string)
+> clustered by(id) 
+> into 4 buckets
+> row format delimited fields terminated by '\t';
+> 
+> ```
+>
+> - 查看表结构，能够看到分桶数；
+>
+> ```
+> desc formatted stu_buck;
+> ```
+>
+> - 设置分桶表属性；
+>
+> ```
+> set hive.enforce.bucketing=true;
+> ```
+>
+> - 设置reduce属性；
+>
+> ```
+> set mapreduce.job.reduces=-1;
+> ```
+>
+> - 将数据加载到分桶表中；
+>
+> ```
+> load data local inpath '/opt/module/datas/student.txt' into table stu;
+> ```
+
+#### 6.7.3 分桶抽样查询
+
+> ​	对于非常大的数据集，用户需要使用的是一个具有代表性的查询结果而不是全部结果；那么就需要分桶抽样数据；
+>
+> ```
+> select * from stu_buck tablesample(bucket 1 out of 4 on id);
+> ```
+>
+> 注：tablesample是抽样语句，语法：TABLESAMPLE(BUCKET x OUT OF y) 。
+>
+> ​	y必须是table总bucket数的倍数或者因子。hive根据y的大小，决定抽样的比例。例如，table总共分了4份，当y=2时，抽取(4/2=)2个bucket的数据，当y=8时，抽取(4/8=)1/2个bucket的数据。
+>
+> ​	x表示从哪个bucket开始抽取，如果需要取多个分区，以后的分区号为当前分区号加上y。例如，table总bucket数为4，tablesample(bucket 1 out of 2)，表示总共抽取（4/2=）2个bucket的数据，抽取第1(x)个和第3(x+y)个bucket的数据。
+>
+> 注意：x的值必须小于等于y的值，否则
+
+### 6.8 其他查询函数
+
+#### 6.8.1 空字段赋值
+
+> 语法：`NVL( string1, replace_with)`
+>
+> 简介：如果string1为NULL，则NVL函数返回replace_with的值，否则返回string1的值，如果两个参数都为NULL ，则返回NULL；
+>
+> 实例一：查询员工的comm，如果为null，则使用-1代替；
+>
+> ```
+> select nvl(comm, -1) from emp;
+> ```
+>
+> 实例二：查询员工的comm，如果为NULL，则使用mgr字段代替；
+>
+> ```
+> select nvl(comm, mgr) from emp;
+> ```
+
+#### 6.8.2 CASE WHEN
+
+> ```
+> select 
+>   dept_id,
+>   sum(case sex when '男' then 1 else 0 end) male_count,
+>   sum(case sex when '女' then 1 else 0 end) female_count
+> from 
+>   emp_sex
+> group by
+>   dept_id;
+> 
+> ```
+
+#### 6.8.3 行转列
+
+> - `CONCAT(string A/col, string B/col…)`：返回输入字符串连接后的结果，支持任意个输入字符串;
+>
+> - `CONCAT_WS(separator, str1, str2,...)`：它是一个特殊形式的 CONCAT()。第一个参数剩余参数间的分隔符。分隔符可以是与剩余参数一样的字符串。如果分隔符是 NULL，返回值也将为 NULL。这个函数会跳过分隔符参数后的任何 NULL 和空字符串。分隔符将被加到被连接的字符串之间;
+>
+> - `COLLECT_SET(col)`：函数只接受基本数据类型，它的主要作用是将某字段的值进行去重汇总，产生array类型字段。
+
+> 案例分享：
+>
+> - 需求：把星座和血型一样的人归类到一起。结果如下：
+>
+> ```
+> 射手座,A            大海|凤姐
+> 白羊座,A            孙悟空|猪八戒
+> 白羊座,B            宋宋
+> ```
+>
+> - 创建本地constellation.txt，导入数据：`vi constellation.txt`
+>
+> ```
+> 孙悟空    白羊座    A
+> 大海      射手座    A
+> 宋宋      白羊座    B
+> 猪八戒    白羊座    A
+> 凤姐      射手座    A
+> ```
+>
+> - 创建hive表并导入数据
+>
+> ```
+> create table person_info(
+> name string, 
+> constellation string, 
+> blood_type string) 
+> row format delimited fields terminated by "\t";
+> 
+> load data local inpath “/opt/module/datas/person_info.txt” into table person_info;
+> ```
+>
+> - 按需求查询数据;
+>
+> ```
+> select t1.base, concat_ws('|', collect_set(t1.name)) name from       (select name, concat(constellation, ",", blood_type) base from             person_info) t1 group by t1.base;   
+> ```
+
+#### 6.8.4 列转行
+
+> - `EXPLODE(col)`：将hive一列中复杂的array或者map结构拆分成多行。
+>
+> - `LATERAL VIEW`
+>   - 用法：LATERAL VIEW udtf(expression) tableAlias AS columnAlias
+>
+>   - 解释：用于和split, explode等UDTF一起使用，它能够将一列数据拆成多行数据，在此基础上可以对拆分后的数据进行聚合。
+
+> 案例分享：
+>
+> - 需求将电影分类中的数组数据展开。结果如下：
+>
+> ```
+> 《疑犯追踪》      悬疑
+> 《疑犯追踪》      动作
+> 《疑犯追踪》      科幻
+> 《疑犯追踪》      剧情
+> 《Lie to me》   悬疑
+> 《Lie to me》   警匪
+> 《Lie to me》   动作
+> 《Lie to me》   心理
+> 《Lie to me》   剧情
+> 《战狼2》        战争
+> 《战狼2》        动作
+> 《战狼2》        灾难
+> ```
+>
+> - 创建本地movie.txt，导入数据：`vi movie.txt`
+>
+> ```
+> 《疑犯追踪》    悬疑,动作,科幻,剧情
+> 《Lie to me》  悬疑,警匪,动作,心理,剧情
+> 《战狼2》  战争,动作,灾难
+> ```
+>
+> - 创建hive表并导入数据
+>
+> ```
+> create table movie_info(       movie   string,        category   array<string>)    row format delimited fields terminated by   "\t"   collection items terminated by ",";       
+>    
+> load data local inpath   "/opt/module/datas/movie.txt" into table movie_info;   
+> ```
+>
+> - 按需求查询数据
+>
+> ```
+>  select       movie,         category_name   from          movie_info lateral view explode(category) table_tmp as category_name;   
+> ```
+
+#### 6.8.5 窗口函数
+
+> - `OVER()`：指定分析函数工作的数据窗口大小，这个数据窗口大小可能会随着行的变而变化
+>
+> - `CURRENT ROW`：当前行
+>
+> - `n PRECEDING`：往前n行数据
+>
+> - `n FOLLOWING`：往后n行数据
+>
+> - `UNBOUNDED`：起点，UNBOUNDED PRECEDING 表示从前面的起点， UNBOUNDED FOLLOWING表示到后面的终点
+>
+> - `LAG(col,n)`：往前第n行数据
+>
+> - `LEAD(col,n)`：往后第n行数据
+>
+> - `NTILE(n)`：把有序分区中的行分发到指定数据的组中，各个组有编号，编号从1开始，对于每一行，NTILE返回此行所属的组的编号。注意：n必须为int类型。
