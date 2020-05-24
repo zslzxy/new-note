@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="edb39750-58db-4156-abfa-0518ef2c97a8" name="Default Changelist" comment="tijiao">
+    <list default="true" id="edb39750-58db-4156-abfa-0518ef2c97a8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/学习笔记/大数据技术/Hive.md" beforeDir="false" afterPath="$PROJECT_DIR$/学习笔记/大数据技术/Hive.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -53,6 +54,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -65,15 +67,21 @@
               <item name="笔记本学习笔记" type="462c0819:PsiDirectoryNode" />
               <item name="学习笔记" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="笔记本学习笔记" type="b2602c69:ProjectViewProjectNode" />
+              <item name="笔记本学习笔记" type="462c0819:PsiDirectoryNode" />
+              <item name="学习笔记" type="462c0819:PsiDirectoryNode" />
+              <item name="大数据技术" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="F:/Software/IDEA/learn" />
@@ -113,6 +121,8 @@
       <workItem from="1582868465677" duration="576000" />
       <workItem from="1584454816144" duration="780000" />
       <workItem from="1584795684362" duration="44000" />
+      <workItem from="1586612395059" duration="830000" />
+      <workItem from="1587212585609" duration="866000" />
     </task>
     <task id="LOCAL-00001" summary="tijiao">
       <created>1582336309824</created>
@@ -128,16 +138,30 @@
       <option name="project" value="LOCAL" />
       <updated>1584454863980</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="tijiao">
+      <created>1586612502728</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1586612502728</updated>
+    </task>
+    <task id="LOCAL-00004" summary="更新hive笔记">
+      <created>1586699944502</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1586699944503</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3719000" />
+    <option name="totallyTimeSpent" value="5415000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="2062" height="1126" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25748503" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26247504" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="UI Designer" order="3" />
@@ -153,10 +177,10 @@
       <window_info anchor="bottom" id="FindBugs-IDEA" order="7" />
       <window_info anchor="bottom" id="Terminal" order="8" weight="0.32955715" />
       <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Event Log" order="10" sideWeight="0.500998" side_tool="true" visible="true" weight="0.13608247" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50149703" side_tool="true" weight="0.26185566" />
       <window_info anchor="bottom" id="Problems" order="11" />
       <window_info anchor="bottom" id="Database Changes" order="12" />
-      <window_info anchor="bottom" id="Version Control" order="13" sideWeight="0.499002" visible="true" weight="0.13608247" />
+      <window_info active="true" anchor="bottom" id="Version Control" order="13" sideWeight="0.498503" visible="true" weight="0.17731959" />
       <window_info anchor="bottom" id="Alibaba Cloud View" order="14" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -176,7 +200,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="tijiao" />
-    <option name="LAST_COMMIT_MESSAGE" value="tijiao" />
+    <MESSAGE value="更新hive笔记" />
+    <option name="LAST_COMMIT_MESSAGE" value="更新hive笔记" />
   </component>
   <component name="masterDetails">
     <states>

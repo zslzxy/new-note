@@ -3012,17 +3012,2264 @@ public class RadixSort {
 }
 ```
 
+### 4.10 排序算法总结
+
+> 排序算法的时间复杂度、稳定性、空间复杂度等对比图；
+>
+> ![1588565392523](assets/1588565392523.png)
+>
+> 专业术语：
+>
+> - **稳定**：当a在b之前，且a=b，如果排序之后两者之间的位置没有发生改变，则是稳定排序算法；
+> - **内排序**：所有的数据都是在内存中进行排序；
+> - **外排序**：由于数据量太大，内存无法容纳，则需要使用外部排序算法，通过磁盘与内存间的交互来计算；
+> - **时间复杂度**：一个算法执行所需要的时间；
+> - **空间复杂度**：运行完一个程序所占用的内存大小；
+> - **n**：数据规模；
+> - **k**：“桶”的个数；
+> - **in-place**：不占用额外内存；
+> - **out-place**：占用额外内存；
 
 
 
+## 5. 查找算法
+
+### 5.1 顺序(线性)查找
+
+> **基本思想：**
+>
+> ​	线性查找算法，是直接根据顺序向下进行查询，如果查询到对应的值，则直接返回该值对应的索引位置；
+>
+> ​	线性查找也称顺序查找；
+
+代码实现：
+
+```java
+//从一个数组中查询对应的数据
+/**
+ * @author ${张世林}
+ * @date 2020/05/04
+ * 作用：线性查找算法
+ */
+public class LineFind {
+
+    public static void main(String[] args) {
+        int[] arr = {3, 6, 7, 4, 1, 9, 7};
+        int index = seqSearch(7, arr);
+        if (index == -1) {
+            System.out.println("没有找到对应数据");
+        } else {
+            System.out.println("i = " + index + ",arr = " + arr[index]);
+        }
+    }
+
+    /**
+     * 线性查找算法，如果查找到了，就直接返回 ,如果没有，则返回 -1
+     * @param target
+     * @param arr
+     * @return
+     */
+    public static int seqSearch(int target, int[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i] == target) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+}
+```
+
+### 5.2 二分查找
+
+> **基本思想：**
+>
+> ​	二分查找是 **在一个<span style='color:red'>有序数组</span>中查找对应的数据**；
+>
+> ​	二分查找算法采用 **递归算法** 或者 **非递归**算法，通常使用递归进行计算；
+>
+> **思路分析**
+>
+> - 第一步：首先确定该数组中间的下标；通常情况下 `mid = (left + right) / 2`；
+> - 第二步：让需要查找的数据与`arr[mid]`进行比较，如果：
+>   - 查找的数据大于`arr[mid]`，则需要向右边进行递归比较；
+>   - 查找的数据小于`arr[mid]`，则需要向左边进行递归比较；
+>   - 查找的数据等于`arr[mid]`，则直接返回该数据，结束递归；
+> - 第三步：结束递归：
+>   - 如果一直没有找到匹配的数据，则需要找到递归结束条件；**当进行递归过程中，左边比右边的索引位置更大，则需要结束递归；**
+
+代码实现：
+
+```java
+/**
+ * @author ${张世林}
+ * @date 2020/05/04
+ * 作用：二分查找算法
+ */
+public class binarySearch {
+
+    /**
+     * 二分查找算法首先需要对数组进行排序，得到一个有序的序列
+     * 在调用二分查找算法，查找对应的数据
+     * @param args
+     */
+    public static void main(String[] args) {
+        int[] arr = {45, 67, 34, 2, 85, 133, 45, 55, 35, 89, 4, 83, 54, 88};
+        bubblingSort(arr);
+
+        int i = binarySearch(45, 0, arr.length - 1, arr);
+        if (i == -1) {
+            System.out.println(i + "暂无该数据");
+        } else {
+            System.out.println(i + "  " + arr[i]);
+        }
+
+        List<Integer> list = binarySearch2(45, 0, arr.length - 1, arr);
+        if (list.size() == 0) {
+            System.out.println(i + "暂无该数据");
+        } else {
+            for (Integer integer : list) {
+                System.out.println(integer + "   " + arr[integer]);
+            }
+        }
+    }
+
+    /**
+     * 先用冒泡算法将数据进行排序
+     * @param arr
+     */
+    public static void bubblingSort(int[] arr) {
+        for (int i = 0; i < arr.length - 1; i++) {
+            int temp = 0;
+            boolean flag = false;
+            for (int j = 0; j < arr.length - 1 - i; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    temp = arr[j + 1];
+                    arr[j + 1] = arr[j];
+                    arr[j] = temp;
+                    flag = true;
+                }
+            }
+            if (!flag) {
+                break;
+            }
+        }
+        System.out.println(Arrays.toString(arr));
+    }
+
+
+    /**
+     * 二分查找算法查询数据
+     * @param target
+     * @param arr
+     * @return
+     */
+    public static int binarySearch(int target, int left, int right, int[] arr) {
+        if (left > right) {
+            return -1;
+        }
+        int mid = (left + right) / 2;
+        if (target == arr[mid]) {
+            return mid;
+        } else if (target < arr[mid]) {
+            return binarySearch(target, left, mid - 1, arr);
+        } else {
+            return binarySearch(target, mid + 1, right, arr);
+        }
+    }
+
+    /**
+     * 二分查找算法查询数据，查找到所有的该数据
+     * @param target
+     * @param arr
+     * @return
+     */
+    public static List<Integer> binarySearch2(int target, int left, int right, int[] arr) {
+        if (left > right) {
+            return new ArrayList<>();
+        }
+        int mid = (left + right) / 2;
+         if (target < arr[mid]) {
+            return binarySearch2(target, left, mid - 1, arr);
+         } else if (target > arr[mid]) {
+             return binarySearch2(target, mid + 1, right, arr);
+         } else {
+             List<Integer> list = new ArrayList<Integer>();
+
+             int temp = mid - 1;
+             while (true) {
+                 if (temp < 0 || arr[temp] != target) {
+                     break;
+                 }
+                 list.add(temp);
+                 temp--;
+             }
+
+             list.add(mid);
+
+             temp = mid + 1;
+             while (true) {
+                 if (temp > arr.length - 1 || arr[temp] != target) {
+                     break;
+                 }
+                 list.add(temp);
+                 temp++;
+             }
+             return list;
+         }
+    }
+}
+
+```
 
 
 
+## 6. Hash（散列）表
+
+### 6.1 基本原理
+
+> **散列表(Hash Table，也称哈希表)，**是根据关键码值(Key/Value)而直接进行访问的数据结构；它通过将关键码值映射到表中一个位置来访问记录，以加快查找速度；这个映射函数称为 **散列函数**，存放记录的数组叫做 **散列表**；
+
+> 通常情况下，哈希表主要有三部分组成：
+>
+> - HashTable类
+>   - 包含了一个散列函数，用于映射散列地址；
+>   - 包含了LinkedList的数组
+> - LinkedList类
+>   - 包含了一个链表的头节点
+>   - 包含了对链表的增删改查
+> - Node类
+>   - 包含了存储的对象的信息
+>
+> ![1588596254300](assets/1588596254300.png)
+
+### 6.2 代码实现
+
+- 需要创建链表的节点类
+
+```java
+package hash;
+
+/**
+ * @author ${张世林}
+ * @date 2020/05/04
+ * 作用：哈希表中的一个链表节点
+ */
+public class LinkedNode {
+
+    public LinkedNode() {
+    }
+
+    public LinkedNode(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public int id;
+    public String name;
+    public LinkedNode next;
+
+    @Override
+    public String toString() {
+        return "LinkedNode{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", next=" + next +
+                '}';
+    }
+}
+
+```
+
+- 创建链表类
+
+```java
+package hash;
+
+/**
+ * @author ${张世林}
+ * @date 2020/05/04
+ * 作用：
+ */
+public class LinkedList {
+
+    public LinkedNode head;
+
+    /**
+     * 添加节点
+     * @param node
+     */
+    public void add(LinkedNode node) {
+        if (head == null) {
+            head = node;
+            return;
+        }
+        LinkedNode temp = head;
+        while (true) {
+            if (temp.next == null) {
+                break;
+            }
+            temp = temp.next;
+        }
+        temp.next = node;
+    }
+
+    /**
+     * 遍历链表
+     */
+    public void list() {
+        if (head == null) {
+            System.out.println("链表为空");
+            return;
+        }
+        LinkedNode temp = head;
+        while (true) {
+            System.out.println(temp);
+            temp = temp.next;
+            if (temp == null) {
+                break;
+            }
+        }
+    }
+
+    /**
+     * 根据id查询对象
+     * @param id
+     * @return
+     */
+    public LinkedNode findById(int id) {
+        if (head == null) {
+            System.out.println("链表为空=====");
+            return null;
+        }
+        LinkedNode temp = head;
+        while (true) {
+            if (temp.id == id) {
+                return temp;
+            }
+            if (temp.next == null) {
+                break;
+            }
+            temp = temp.next;
+        }
+        return null;
+    }
+
+}
+
+```
+
+- 创建hashtable对象；
+
+```java
+package hash;
+
+/**
+ * @author ${张世林}
+ * @date 2020/05/04
+ * 作用：
+ */
+public class HashTable {
+
+    public static void main(String[] args) {
+        HashTable table = new HashTable(9);
+        table.add(new LinkedNode(2,"zsl"));
+        table.add(new LinkedNode(11,"wx"));
+        table.list();
+        System.out.println(table.findById(11));
+    }
+
+    LinkedList[] linkedLists;
+
+    public HashTable(int size) {
+        this.linkedLists = new LinkedList[size];
+        for (int i = 0; i < size; i++) {
+            this.linkedLists[i] = new LinkedList();
+        }
+    }
+
+    /**
+     * 添加链表节点
+     */
+    public void add(LinkedNode node) {
+        int hash = hash(node.id);
+        linkedLists[hash].add(node);
+    }
+
+    public void list() {
+        for (LinkedList list : linkedLists) {
+            list.list();
+        }
+    }
+
+    /**
+     * 根据节点的id使用hash计算得到需要的链表节点
+     * @param id
+     * @return
+     */
+    public int hash(int id) {
+        return id % linkedLists.length;
+    }
+
+    /**
+     * 根据id查询对象
+     * @param id
+     * @return
+     */
+    public LinkedNode findById(int id) {
+        int hash = hash(id);
+        LinkedNode node = linkedLists[hash].findById(id);
+        return node;
+    }
+}
+
+```
+
+## 7. 树
+
+### 7.1 二叉树
+
+#### 7.1.1 存储数据结构比较
+
+> - 数组存储方式分析：
+>   - 优势：数组可以通过下标凡是访问元素，速度快；对于有序数组，还可以使用二分法查找提高检索效率；
+>   - 劣势：如果需要具体检索某一个值，或者插入一个值，则会需要将后面的值进行整体移动，效率较低；
+> - 链式存储方式分析：
+>   - 优势：在一定程度上对数组存储方式有优化，插入、删除数据节点，能够更加高效的进行操作；
+>   - 劣势：进行数据检索时，效率较低；
+> - 树存储方式分析：
+>   - 能够提高数据存储、读取效率，比如利用 **二叉排序树(Binary Sort Tree)** ，既可以保证数据检索速度，同时也可以保证数据的插入、删除、修改速度；
+
+#### 7.1.2 树常用术语
+
+> - 节点：所有的节点都是节点
+>   - 根节点：最顶端的节点
+>   - 父节点：存在子节点的节点，就是父节点
+>   - 子节点：存在父节点的节点，就是子节点
+>   - 叶子节点：没有子节点的节点，也就是最底端的节点
+> - 节点的权：也就是节点的值
+> - 路径：从根节点找到该节点的路径
+> - 层：节点是一层一层向下扩展的，所以会分为不同的层
+> - 子树：
+> - 树的高度：也就是最大的层数；
+> - 森林：多颗子树构成森林；
+
+#### 7.1.3 二叉树
+
+> - 二叉树，是每个节点最多只能存在两个子节点；
+> - 如果二叉树 **所有的叶子节点都在最后一层，并且节点总数满足 `sum = 2^n - 1`， n为层数，则称为 满二叉树；**
+> - 入股二叉树的所有叶子节点都在最后一层或者倒数第二层，而且最后一层的叶子节点在左边连续，倒数第二层的叶子节点都是在右边连续，则称为 **完全二叉树**；
+
+### 7.2 二叉树遍历
+
+#### 7.2.1 遍历原理
+
+> - 前序遍历：先输出父节点，再遍历左子树和右子树；
+> - 中序遍历：先遍历左子树，再输出父节点，再遍历右子树；
+> - 后序遍历：先遍历左子树，再遍历右子树，最后输出父节点；
+>
+> 二叉树的遍历是指 **从根节点出发，按照某种次序一次访问二叉树中的所有节点，使得每个节点被访问一次且仅被访问一次；**
+
+#### 7.2.2 前序遍历
+
+> 遍历顺序：先输出当前节点的数据，再依次遍历输出左节点和右节点；
+
+![2019032117502827](assets/2019032117502827.png)
+
+```
+遍历过程(括号里代表该节点的子节点，  每次把遍历节点放再子节点的左右节点之前)
+A  (B,C)  
+A   B (D)   C (E)   F
+A  B   D  G  H  C  E(I)  F
+
+最终结果   A B D G H C E I F
+```
 
 
 
+#### 7.2.3 中序遍历
+
+> 遍历顺序： 先遍历输出左结点，再输出当前结点的数据，再遍历输出右结点
+
+![2019032117502827-1588657514083](assets/2019032117502827-1588657514083.png)
+
+```
+遍历过程(括号里代表该节点的子节点，  每次把遍历节点放再子节点的左右节点中间)
+A (B,C)
+B(D)  A  C(E,F)
+D(G,H)  B  A C(E,F)
+G D H  B  A C(E,F)
+G D H  B  A  E(I)  C F
+G D H  B  A  E  I  C  F
+
+最终结果：   G D H B A E I C F
+```
 
 
 
+#### 7.2.4 后序遍历
 
+> 遍历顺序： 先遍历输出左结点，再遍历输出右结点，最后输出当前结点的数据；
+
+![2019032117502827-1588657613038](assets/2019032117502827-1588657613038.png)
+
+```
+遍历过程(括号里代表该节点的子节点，  每次把遍历节点放再子节点的左右节点之后):
+A (B,C)
+B(D)  C(E,F)  A
+D(G,H)  B   C(E,F)  A
+G H D B C(E,F)  A
+G H D B E（I） F C  A
+G H D B I E F C  A
+
+最终结果： G H D B I E F C A 
+```
+
+#### 7.2.5 代码实现
+
+- 首先，需要创建Node节点，节点中包含左节点和右节点的指针；
+
+```java
+package tree;
+
+/**
+ * 节点
+ */
+public class Node {
+
+    public int id;
+    public String name;
+    public Node left;
+    public Node right;
+
+    public Node(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    /**
+     * 前序递归遍历
+     * @param node
+     */
+    public void preOrder(Node node) {
+        if (node == null) {
+            return;
+        }
+        System.out.print(node.name + " ");
+        preOrder(node.left);
+        preOrder(node.right);
+    }
+
+    /**
+     * 中序递归遍历
+     * @param node
+     */
+    public void infixOrder(Node node) {
+        if (node == null) {
+            return;
+        }
+        infixOrder(node.left);
+        System.out.print(node.name + " ");
+        infixOrder(node.right);
+    }
+
+    /**
+     * 后序递归遍历
+     * @param node
+     */
+    public void suffixOrder(Node node) {
+        if (node == null) {
+            return;
+        }
+        suffixOrder(node.left);
+        suffixOrder(node.right);
+        System.out.print(node.name + " ");
+    }
+
+    @Override
+    public String toString() {
+        return "Node{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", left=" + left +
+                ", right=" + right +
+                '}';
+    }
+}
+
+```
+
+- 创建二叉树对象，里面只需要一个root节点属性，以及调用前中后序遍历的方法；
+
+```java
+public class BinaryTree {
+
+    public Node root;
+
+    /**
+     * 前序遍历
+     */
+    public void preOrder() {
+        this.root.preOrder(root);
+    }
+
+    /**
+     * 中序遍历
+     */
+    public void infixOrder() {
+        this.root.infixOrder(root);
+    }
+
+    /**
+     * 后序遍历
+     */
+    public void suffixOrder() {
+        this.root.suffixOrder(root);
+    }
+}
+```
+
+- 创建二叉树树，并进行遍历；
+
+```java
+    public static void main(String[] args) {
+        //先创建一棵二叉树
+        BinaryTree binaryTree = new BinaryTree();
+        Node root = new Node(0, "A");
+        Node nodeB = new Node(1, "B");
+        Node nodeC = new Node(2, "C");
+        Node nodeD = new Node(3, "D");
+        Node nodeE = new Node(4, "E");
+        Node nodeF = new Node(5, "F");
+        Node nodeG = new Node(6, "G");
+        Node nodeH = new Node(7, "H");
+        Node nodeI = new Node(8, "I");
+
+        //手动创建二叉树
+        binaryTree.root = root;
+        root.left = nodeB;
+        root.right = nodeC;
+        nodeB.left = nodeD;
+        nodeD.left = nodeG;
+        nodeD.right = nodeH;
+        nodeC.left = nodeE;
+        nodeC.right = nodeF;
+        nodeE.right = nodeI;
+
+        binaryTree.preOrder();
+        System.out.println();
+        binaryTree.infixOrder();
+        System.out.println();
+        binaryTree.suffixOrder();
+    }
+
+```
+
+### 7.3 二叉树-查找节点
+
+> 查询二叉树中的节点，主要可以采用前中后序遍历查找的方式进行查找；
+
+```java
+public class Node {
+
+    public int id;
+    public String name;
+    public Node left;
+    public Node right;   
+
+   /**
+     * 根据前序查找方式进行查找数据
+     *  首先，当前对象的id是否相等，如果相等，则直接返回
+     *  其次，进行左递归操作，如果当前对象的left不为空，则使用当前对象的left对象继续向下调用，如果temp变量不为空，则直接返回
+     *  最后，进行右递归操作，如果temp不为空，则直接返回即可；
+     * @param id
+     * @return
+     */
+    public Node preFind(int id) {
+        System.out.println("pre");
+        //验证当前节点是否匹配
+        if (this.id == id) {
+            return this;
+        }
+
+        Node temp = null;
+        if (this.left != null) {
+            temp = this.left.preFind(id);
+        }
+        if (temp != null) {
+            return temp;
+        }
+
+        if (this.right != null) {
+            temp = this.right.preFind(id);
+        }
+        if (temp != null) {
+            return temp;
+        }
+        return null;
+    }
+
+
+    /**
+     * 中序遍历查找
+     *
+     * @param id
+     * @return
+     */
+    public Node infixFind(int id) {
+        Node temp = null;
+        if (this.left != null) {
+            temp = this.left.infixFind(id);
+        }
+        if (temp != null) {
+            return temp;
+        }
+        System.out.println("infix");
+
+        //验证当前节点是否匹配
+        if (this.id == id) {
+            return this;
+        }
+
+        if (this.right != null) {
+            temp = this.right.infixFind(id);
+        }
+        if (temp != null) {
+            return temp;
+        }
+        return null;
+    }
+
+    /**
+     * 后序遍历查找
+     * @param id
+     * @return
+     */
+    public Node suffixFind(int id) {
+        Node temp = null;
+        if (this.left != null) {
+            temp = this.left.suffixFind(id);
+        }
+        if (temp != null) {
+            return temp;
+        }
+
+        if (this.right != null) {
+            temp = this.right.suffixFind(id);
+        }
+        if (temp != null) {
+            return temp;
+        }
+        System.out.println("suffix");
+
+        //验证当前节点是否匹配
+        if (this.id == id) {
+            return this;
+        }
+        return null;
+    }
+}
+```
+
+### 7.4 二叉树-删除节点
+
+#### 7.4.1 删除规则一
+
+> 删除规则：
+>
+> - 如果找到该节点，并且该节点是叶子节点，则直接删除该节点；
+> - 如果找到该节点不是叶子节点，则直接删除该子树；
+>
+> 删除思路：
+>
+> - 由于二叉树的特性，是只能从上往下进行一层一层的查找，如果当我们将指针指向了需要删除的节点，那么就已然无法将其删除（因为需要在它上一层的节点中将该节点的引用置为空）；
+> - 所以，需要使用节点的左右指针对象来进行判断，如果符合条件，直接将该指针置空；
+
+> 实现流程：
+>
+> - 第一步：在BinaryTree中验证一下root节点是否是为空，或者root节点的id是否相等，如果相等，则直接置空root节点；
+> - 第二步：在Node节点中编写删除节点方法，首先验证左节点不为空的话，是否是需要删除的对象，如果不是的话，直接验证右节点不为空，且是否需要删除；
+> - 如果上述不符合，则直接进行递归，进入下一层循环；
+> - 最终直到遍历删除成功或者遍历结束即可；
+
+```java
+/**
+ * 二叉树遍历
+ */
+public class BinaryTree {
+	/**
+     * 删除节点，首先先判断root节点是不是需要删除的对象，如果是的，则直接将root置空
+     * @param id
+     */
+    public void deleteNode(int id) {
+        if (this.root == null || this.root.id == id) {
+            root = null;
+            return;
+        }
+        //如果不是root节点，则直接进行查看左右子节点是否匹配了
+        root.deleteNode(id);
+
+    }
+}
+```
+
+```java
+public class Node {
+
+    public int id;
+    public String name;
+    public Node left;
+    public Node right;
+
+	/**
+     * 根据id删除节点，如果是叶子节点，则直接删除该节点，如果不是，则删除该子树
+     *  需要使用节点的左右指针来进行判断，因为这样才能够在匹配成功以后，进行指针的置空
+     * 实现步骤：
+     *  1.如果左子树不为空且左子树的id == id，则直接置空左子树；
+     *  2.如果左子树未成功，则查看右子树，同上一部操作
+     *  3.如果上诉都未成功，则继续进行递归，验证是否存在id相同的节点
+     * @param id
+     */
+    public void deleteNode(int id) {
+        if (this.left != null && this.left.id == id) {
+            System.out.println("删除成功");
+            this.left = null;
+        }
+
+        if (this.right != null && this.right.id == id) {
+            System.out.println("删除成功");
+            this.right = null;
+        }
+
+        if (this.left != null) {
+            this.left.deleteNode(id);
+        }
+
+        if (this.right != null) {
+            this.right.deleteNode(id);
+        }
+    }
+}
+```
+
+### 7.5 顺序存储二叉树
+
+#### 7.5.1 需求分析
+
+> 需求：如果将一个二叉树使用数组来进行存储，但是执行遍历数组的时候，还是需要使用前中后序得到遍历方式输出数据，则需要使用**顺序二叉树**，<span style='color:red'>也称：顺序存储二叉树</span>；例如：将上面的二叉树使用数组来进行存放；
+>
+> ![1588773640340](assets/1588773640340.png)
+>
+> 顺序存储二叉树特点：
+>
+> - 顺序二叉树通常只考虑完全二叉树；
+> - 从数组中的维度来看，第n个元素的左子节点所在位置：`2 * n + 1`
+> - 从数组中的维度来看，第n个元素的右子节点所在位置：`2 * n + 2`
+> - n表示二叉树中的第几个元素，下标从0开始；
+
+#### 7.5.2 代码实现
+
+```java
+package tree;
+
+/**
+ * @author ${张世林}
+ * @date 2020/05/06
+ * 需求：使用顺醋存储二叉树，实现读取树转换为数组中的数据，，但是输出的结果是使用前序方式输出的；
+ */
+public class ArrayBinaryTree {
+
+    public static void main(String[] args) {
+        int[] arr = {1, 2, 3, 4, 5, 6, 7};
+        ArrayBinaryTree tree = new ArrayBinaryTree(arr);
+        tree.preOrder(0);
+    }
+
+    /**
+     * 存储二叉树节点的数据数组
+     */
+    int[] arr;
+
+    public ArrayBinaryTree(int[] arr) {
+        this.arr = arr;
+    }
+
+    /**
+     * 完成前序遍历数组中的数据
+     *
+     * @param index 表示数组中的下标
+     */
+    public void preOrder(int index) {
+        int length = arr.length;
+        if (arr == null || length == 0) {
+            System.out.println("数组为空");
+        }
+        if (index > length - 1) {
+            return;
+        }
+        System.out.print(arr[index] + " ");
+        preOrder(2 * index + 1);
+        preOrder(2 * index + 2);
+    }
+
+}
+
+```
+
+### 7.6 线索化二叉树
+
+#### 7.6.1 基本思路
+
+> ​	由7.5章节引出的 **顺序存储二叉树**，在二叉树的存储结构中，还有一种 **链表二叉树**；
+>
+> ​	线索化二叉树：因为在二叉链表的存储结构中，会存在大量的空指针域，如果能够充分利用此空指针域，则能够极大的提高效率；由此，引申出来 <span style='color:red'>线索二叉树</span>；如图所示：所有 **^** 符号都是空的，均可作为线索；
+>
+> ![20170106111258885](assets/20170106111258885.jpg)
+>
+> ​	对于一个有n个节点的二叉链表，每个节点有指向左右节点的2个指针域，整个二叉链表存在2n个指针域。而n个节点的二叉链表有n-1条分支线，那么空指针域的个数=2n-(n-1) = n+1个空指针域，从存储空间的角度来看，这n+1个空指针域浪费了内存资源。
+>
+> ​	从另外一个角度来分析，如果我们想知道按中序方式遍历二叉链表时B节点的前驱节点或者后继节点时，必须要按中序方式遍历二叉链表才能够知道结果，每次需要结果时都需要进行一次遍历；可以通过充分利用二叉链表中的空指针域，存放节点在某种遍历方式下的前驱和后继节点的指针；
+>
+> ​	**把这种指向前驱和后继的指针成为线索，加上线索的二叉链表成为线索链表，对应的二叉树就成为“线索二叉树(Threaded Binary Tree)”** ；
+
+#### 7.6.2 构建线索二叉树流程
+
+> ​	**线索化二叉树是采用前中后序遍历方式进行；**
+>
+> - 第一步：按照中序遍历过程，将所有为空的right子节点指向其后继节点；最后一个空子节点指向null；
+>
+> ![20170107155134727](assets/20170107155134727.jpg)
+>
+> - 第二步：按照中序遍历过程，将所有为空的left子节点指向其前继节点；第一个left空子节点指向null；
+>
+> ![20170107160423582](assets/20170107160423582.jpg)
+>
+> - 第三步：根据左右线索，连成的一个线索二叉树；
+>
+> ![20170107161320086](assets/20170107161320086.jpg)
+>
+> - 第四步：使用中序遍历方式，能够将一颗二叉树转变为 **特殊的双向链表**，实现能够快速增删改查的双向链表结构；
+>
+> ![20170107163208797](assets/20170107163208797.jpg)
+>
+> 
+
+#### 7.6.3 代码实现
+
+- 首先，创建线索化节点，添加leftType与rightType属性；
+
+```java
+package tree.clue;
+
+/**
+ * @author ${张世林}
+ * @date 2020/05/09
+ * 作用：线索化二叉树节点，增加了两个变量
+ */
+public class ClueNode {
+
+    public int id;
+    public String name;
+    public ClueNode left;
+    public ClueNode right;
+
+    //如果leftType==0，则表示指向左子树，  如果leftType==1，则表示指向前驱节点
+    public int leftType;
+    //如果leftType==0，则表示指向右子树，  如果leftType==1，则表示指向后驱节点
+    public int rightType;
+
+    public ClueNode(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    /**
+     * 根据id删除节点，如果是叶子节点，则直接删除该节点，如果不是，则删除该子树
+     *  需要使用节点的左右指针来进行判断，因为这样才能够在匹配成功以后，进行指针的置空
+     * 实现步骤：
+     *  1.如果左子树不为空且左子树的id == id，则直接置空左子树；
+     *  2.如果左子树未成功，则查看右子树，同上一部操作
+     *  3.如果上诉都未成功，则继续进行递归，验证是否存在id相同的节点
+     * @param id
+     */
+    public void deleteNode(int id) {
+        if (this.left != null && this.left.id == id) {
+            System.out.println("删除成功");
+            this.left = null;
+        }
+
+        if (this.right != null && this.right.id == id) {
+            System.out.println("删除成功");
+            this.right = null;
+        }
+
+        if (this.left != null) {
+            this.left.deleteNode(id);
+        }
+
+        if (this.right != null) {
+            this.right.deleteNode(id);
+        }
+    }
+
+    /**
+     * 前序递归遍历
+     * @param node
+     */
+    public void preOrder(ClueNode node) {
+        if (node == null) {
+            return;
+        }
+        System.out.print(node.name + " ");
+        preOrder(node.left);
+        preOrder(node.right);
+    }
+
+    /**
+     * 中序递归遍历
+     * @param node
+     */
+    public void infixOrder(ClueNode node) {
+        if (node == null) {
+            return;
+        }
+        infixOrder(node.left);
+        System.out.print(node.name + " ");
+        infixOrder(node.right);
+    }
+
+    /**
+     * 后序递归遍历
+     * @param node
+     */
+    public void suffixOrder(ClueNode node) {
+        if (node == null) {
+            return;
+        }
+        suffixOrder(node.left);
+        suffixOrder(node.right);
+        System.out.print(node.name + " ");
+    }
+
+    @Override
+    public String toString() {
+        return "ClueNode{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
+
+    /**
+     * 根据前序查找方式进行查找数据
+     *  首先，当前对象的id是否相等，如果相等，则直接返回
+     *  其次，进行左递归操作，如果当前对象的left不为空，则使用当前对象的left对象继续向下调用，如果temp变量不为空，则直接返回
+     *  最后，进行右递归操作，如果temp不为空，则直接返回即可；
+     * @param id
+     * @return
+     */
+    public ClueNode preFind(int id) {
+        System.out.println("pre");
+        //验证当前节点是否匹配
+        if (this.id == id) {
+            return this;
+        }
+
+        ClueNode temp = null;
+        if (this.left != null) {
+            temp = this.left.preFind(id);
+        }
+        if (temp != null) {
+            return temp;
+        }
+
+        if (this.right != null) {
+            temp = this.right.preFind(id);
+        }
+        if (temp != null) {
+            return temp;
+        }
+        return null;
+    }
+
+
+    /**
+     * 中序遍历查找
+     *
+     * @param id
+     * @return
+     */
+    public ClueNode infixFind(int id) {
+        ClueNode temp = null;
+        if (this.left != null) {
+            temp = this.left.infixFind(id);
+        }
+        if (temp != null) {
+            return temp;
+        }
+        System.out.println("infix");
+
+        //验证当前节点是否匹配
+        if (this.id == id) {
+            return this;
+        }
+
+        if (this.right != null) {
+            temp = this.right.infixFind(id);
+        }
+        if (temp != null) {
+            return temp;
+        }
+        return null;
+    }
+
+    /**
+     * 后序遍历查找
+     * @param id
+     * @return
+     */
+    public ClueNode suffixFind(int id) {
+        ClueNode temp = null;
+        if (this.left != null) {
+            temp = this.left.suffixFind(id);
+        }
+        if (temp != null) {
+            return temp;
+        }
+
+        if (this.right != null) {
+            temp = this.right.suffixFind(id);
+        }
+        if (temp != null) {
+            return temp;
+        }
+        System.out.println("suffix");
+
+        //验证当前节点是否匹配
+        if (this.id == id) {
+            return this;
+        }
+        return null;
+    }
+}
+
+```
+
+- 编写线索化二叉树，主要是将二叉树线索化、遍历线索化二叉树即可；
+
+```java
+package tree.clue;
+
+import tree.Node;
+
+import java.util.Objects;
+
+/**
+ * @author ${张世林}
+ * @date 2020/05/09
+ * 作用：线索化二叉树
+ */
+public class ClueBinaryTree {
+
+
+    public ClueNode root;
+
+    /**
+     * 用于记录线索化过程中的前驱节点
+     */
+    public ClueNode preTemp = null;
+
+    public void threadedNodes() {
+        threadedNodes(this.root);
+    }
+
+    /**
+     * 将二叉树进行线索化
+     * @param node
+     */
+    public void threadedNodes(ClueNode node) {
+        //如果node==null, 不能线索化
+        if(node == null) {
+            return;
+        }
+
+        //(一)先线索化左子树
+        threadedNodes(node.left);
+        //(二)线索化当前结点[有难度]
+
+        //处理当前结点的前驱结点
+        //以8结点来理解
+        //8结点的.left = null , 8结点的.leftType = 1
+        if(node.left == null) {
+            //让当前结点的左指针指向前驱结点
+            node.left = (preTemp);
+            //修改当前结点的左指针的类型,指向前驱结点
+            node.leftType = (1);
+        }
+
+        //处理后继结点
+        if (preTemp != null && preTemp.right == null) {
+            //让前驱结点的右指针指向当前结点
+            preTemp.right = (node);
+            //修改前驱结点的右指针类型
+            preTemp.rightType = (1);
+        }
+        //!!! 每处理一个结点后，让当前结点是下一个结点的前驱结点
+        preTemp = node;
+
+        //(三)在线索化右子树
+        threadedNodes(node.right);
+    }
+
+    /**
+     * 遍历线索化二叉树
+     */
+    public void clueEachNodes() {
+        ClueNode node = root;
+        while (node != null) {
+            //首先，需要找到第一个leftType = 1 的节点， 用于找到线索化二叉树的第一个节点
+            while (node.leftType == 0) {
+                node = node.left;
+            }
+            //将该节点进行打印
+            System.out.println(node);
+
+            //寻找右边后续节点，根据rightType
+            while (node.rightType == 1) {
+                node = node.right;
+                System.out.println(node);
+            }
+            //将下一个节点赋值给遍历的节点上
+            node = node.right;
+        }
+    }
+}
+```
+
+- 编写线索化二叉树的用例
+
+```java
+package tree.clue;
+
+import tree.BinaryTree;
+import tree.Node;
+
+/**
+ * @author ${张世林}
+ * @date 2020/05/09
+ * 作用：
+ */
+public class ClueBinaryTreeTest {
+
+    public static void main(String[] args) {
+        ClueBinaryTree binaryTree = new ClueBinaryTree();
+        ClueNode root = new ClueNode(0, "A");
+        ClueNode nodeB = new ClueNode(1, "B");
+        ClueNode nodeC = new ClueNode(2, "C");
+        ClueNode nodeD = new ClueNode(3, "D");
+        ClueNode nodeE = new ClueNode(4, "E");
+        ClueNode nodeF = new ClueNode(5, "F");
+        ClueNode nodeG = new ClueNode(6, "G");
+        ClueNode nodeH = new ClueNode(7, "H");
+        ClueNode nodeI = new ClueNode(8, "I");
+
+        //手动创建二叉树
+        binaryTree.root = root;
+        root.left = nodeB;
+        root.right = nodeC;
+        nodeB.left = nodeD;
+        nodeD.left = nodeG;
+        nodeD.right = nodeH;
+        nodeC.left = nodeE;
+        nodeC.right = nodeF;
+        nodeE.right = nodeI;
+
+        binaryTree.threadedNodes(root);
+        binaryTree.clueEachNodes();
+    }
+
+}
+
+```
+
+### 7. 7 堆排序
+
+#### 7.7.1 堆排序基本介绍
+
+> - 堆排序是利用 **堆** 这种数据结构而设计的一种排序算法，堆排序是一种选择排序，它最好、最坏、平均时间的复杂度均为`O(longn)`，是一种**不稳定排序**；
+>
+> -  堆是 **完全二叉树结构**，具有如下性质：
+>
+>   - 每个节点的值都大于等于其左右孩子的值，称为 **大顶堆**；（注意：未限制左右孩子节点值的规律）
+>
+>   ![1589083616758](assets/1589083616758.png)
+>
+>   - 将上图进行下标编号放置到数组中，则结果为：
+>
+>   ![1589083658276](assets/1589083658276.png)
+>
+>   - 规律：**arr[i] >= arr[2 * i + 1]  && arr[i] >= arr[2 * i + 2]**
+>
+>   - 每个节点的值都小于等于其左右孩子的值，称为 **小顶堆**；
+>
+>     ![1589083963639](assets/1589083963639.png)
+>
+>   - 规律：**arr[i] <= arr[2 * i + 1]  && arr[i] <= arr[2 * i + 2]**
+
+#### 7.7.2 堆排序基本思想
+
+> - 第一步：将待排序序列构造成一个大顶堆（也就是使用一个数组来存放）；
+> - 第二步：此时，整个序列的最大值就是堆顶的根节点；
+> - 第三步：将其与末尾元素进行交换，此时末尾元素就是最大值；
+> - 第四步：将末尾元素取出；
+> - 第五步：再重新将剩余n-1个元素构造成一个大顶堆，反复执行上诉操作即可；
+>
+> - 第六步：最终就输出了一个升序数组；
+>
+> **通常情况下， 输出升序序列采用大顶堆，输出降序序列采用小顶堆；**
+
+> 图解过程：
+>
+> - 第一步：原始数组 [4,6,8,5,9]，其结构如下：
+>
+> ![1589087657500](assets/1589087657500.png)
+>
+> - 第二步：构造一个大顶堆，此时从最后一个非叶子节点开始，从左至右，从下至上进行调整，将最大值放置到该叶子节点；
+>
+> ![1589087842011](assets/1589087842011.png)
+>
+> - 第三步：继续向上找到第二个非叶子节点，判断其左右子节点的值，找到最大值，并赋值该节点；
+>
+>   ![1589088071875](assets/1589088071875.png)
+>
+> - 第四步：执行第二次及其后面更多非叶子节点数据交互过程中，可能会导致子树出现了不符合大顶堆的情况，需要继续将子树中的最大值找出来进行赋值；
+>
+> ![1589088166326](assets/1589088166326.png)
+>
+> - 第五步，堆顶部得到了一个最大值，将最大值与大顶堆中的最后一个值进行交换，便能够得到一个最大值，并将该最大值取出；
+>
+> ![1589088308160](assets/1589088308160.png)
+>
+> - 第六步：将最大值取出之后，需要重新调整结构，时其满足大顶堆的规则；
+>
+> ![1589088387435](assets/1589088387435.png)
+>
+> - 第七步：在重复上诉过程，对剩下的n-1个数进行上诉操作，重复的获取到最大值数据并取出；
+>
+> ![1589088574012](assets/1589088574012.png)
+
+> 思路总结：
+>
+> - 第一步：将无序序列构造成一个堆，根据升降序规则来构造堆结构；
+>   - 升序：大顶堆
+>   - 降序：小顶堆
+> - 第二步：将堆顶元素与末尾元素进行交换，将堆顶元素放到最后；
+> - 第三步：重新调整结构，使n-1个数据满足堆结构，并重复执行上诉过程，得到一个有序序列；
+
+#### 7.7.3 堆排序代码实现
+
+```java
+package tree.heap;
+
+import jdk.nashorn.internal.ir.IfNode;
+
+import javax.swing.*;
+import java.util.Arrays;
+
+/**
+ * @author ${张世林}
+ * @date 2020/05/10
+ * 作用：
+ */
+public class HeapSort {
+
+    public void heapSort(int[] arr) {
+        System.out.println("开始执行堆排序");
+        int temp = 0;
+        //完成我们最终代码
+        //将无序序列构建成一个堆，根据升序降序需求选择大顶堆或小顶堆
+        for (int i = arr.length / 2 - 1; i >= 0; i--) {
+            adjustHeap(arr, i, arr.length);
+        }
+
+		/*
+		 * 2).将堆顶元素与末尾元素交换，将最大元素"沉"到数组末端;
+　　			3).重新调整结构，使其满足堆定义，然后继续交换堆顶元素与当前末尾元素，反复执行调整+交换步骤，直到整个序列有序。
+		 */
+        for (int j = arr.length - 1; j > 0; j--) {
+            //交换
+            temp = arr[j];
+            arr[j] = arr[0];
+            arr[0] = temp;
+            adjustHeap(arr, 0, j);
+        }
+        System.out.println(Arrays.toString(arr));
+    }
+
+    /**
+     * 将一个数组（也就是一个二叉树嘛），调整成一个大顶堆
+     * 举例：int arr = [4,6,8,5,9] ， =》 i = 1 =》 adjustHeap方法 =》 得到 [4,9,8,5,6]
+     * 如果再次调用 addjustHeap方法，传入的就是 i = 0， 得到 [4,9,8,5,6]  然后需要将子节点调整，得到 [9,6,8,5,4]
+     * * @param arr
+     *
+     * @param i         表示非叶子节点在数组中的节点
+     * @param arrLength 表示对多少个元素进行调整为大顶堆，由于每次都是会减少一次，所以需要有个长度标识
+     */
+    public void adjustHeap(int arr[], int i, int length) {
+
+        int temp = arr[i];//先取出当前元素的值，保存在临时变量
+        //开始调整
+        //说明
+        //1. k = i * 2 + 1 k 是 i结点的左子结点
+        for (int k = i * 2 + 1; k < length; k = k * 2 + 1) {
+            if (k + 1 < length && arr[k] < arr[k + 1]) { //说明左子结点的值小于右子结点的值
+                k++; // k 指向右子结点
+            }
+            if (arr[k] > temp) { //如果子结点大于父结点
+                arr[i] = arr[k]; //把较大的值赋给当前结点
+                i = k; //!!! i 指向 k,继续循环比较
+            } else {
+                break;//!
+            }
+        }
+        //当for 循环结束后，我们已经将以i 为父结点的树的最大值，放在了 最顶(局部)
+        arr[i] = temp;//将temp值放到调整后的位置
+    }
+    
+}
+
+```
+
+### 7.8 赫夫曼树
+
+#### 7.8.1 基本介绍
+
+> ​	给定n个权值作为n个叶子节点，构造成一颗二叉树，若该树的**带权路径长度(wpl)**达到最小，这样的二叉树称为 **最优二叉树**，也称 **赫夫曼树**；
+>
+> ​	**赫夫曼树是怠权路径长度最短的树，实现该树的条件是：权值越大的节点离根节点越近**；
+
+> 赫夫曼树中的几大概念：
+>
+> - **路径**：从一个节点往下可以到达的孩子或者孙子节点之间的通路，称为路径；
+> - **路径长度**：通路中分支的数目称为路径长度；若：规定根节点的层数为1，则到达第L层节点的路径长度为 n - 1；
+> - **节点的权**：将树中节点赋给一个有着某种含义的数值，则这个数值称为该节点的权；
+> - **带权路径长度**：从根节点到该节点之间的路径长度与该节点的权的乘积；
+>   - 公式： 带权路径长度 = 路径长度(n - 1) * 节点的权；
+> - **树的带权路径长度**：树的带权路径长度规定为所有**叶子节点**的带权路径长度之和，记为：**`WPL(weighted path length)`**；权值越大的节点离根节点越近的树，才是 **最优二叉树**；
+> - `WPL`最小的树就是赫夫曼树；
+
+#### 7.8.2 实现步骤
+
+> - 第一步：将数组的每一个数据组装成一个个Node节点；
+> - 第二步：将Node节点的数值按照从小到大进行排序，然后将每一个节点都看做为一颗最简单的树；
+> - 第三步：取出根节点权值最小的两颗二叉树； 
+> - 第四步：组装成一颗新的二叉树，该新的二叉树的根节点的权值是前面两颗二叉树根节点权值之和；
+> - 第五步：再将这颗二叉树，以根节点的权值大小再次排序，不断重复 第二~第五步，直到数列中所有的数据都被处理到，就得到了一颗赫夫曼树；
+
+> 例如：将{13， 7， 8， 3， 29， 6， 1}进行排序，得到结果集{1,3,6,7,8,13,29}，然后再根据顺序进行组装二叉树，最终所有的叶子节点就是数组中的数据，从而实现赫夫曼树；
+>
+> ![1589803317751](assets/1589803317751.png)
+
+#### 7.8.3 代码实现
+
+```java
+package com.huffmantree;
+
+import com.sun.scenario.effect.impl.prism.ps.PPSBlend_MULTIPLYPeer;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+/**
+ * @author ${张世林}
+ * @date 2020/05/18
+ * 作用：
+ */
+public class HuffManTree {
+
+    public static void main(String[] args) {
+        int[] arr = {13, 7, 8, 3, 29, 6, 1};
+        Node huffManTree = createHuffManTree(arr);
+
+        //遍历赫夫曼树
+        preList(huffManTree);
+    }
+
+    /**
+     * 前序遍历
+     */
+    public static void preList(Node root) {
+        if (root != null) {
+            root.preOrder(root);
+        }
+    }
+
+    /**
+     * 创建赫夫曼树
+     * @param arr
+     * @return
+     */
+    public static Node createHuffManTree(int[] arr) {
+        //首先， 将数组组装成Node节点，相当于是每个节点都是一颗最简单的二叉树
+        List<Node> list = new ArrayList<Node>();
+        for (int item : arr) {
+            list.add(new Node(item));
+        }
+
+        //赫夫曼树最终是需要将集合中的数据只剩下一个，那么久表示根节点找到了，停止循环
+        while (list.size() > 1) {
+            //将所有的节点进行排序，实现一个从小到大的排序结构
+            Collections.sort(list);
+            System.out.println(list);
+
+            //第二步：取出根节点最小的两个二叉树，也就是最小的两个节点，也就是第一个与第二个节点
+            Node left = list.get(0);
+            Node right = list.get(1);
+            //第三步：将其构建微一颗新的二叉树，需要创建一个父节点，分别指向左右节点
+            Node parent = new Node(left.value + right.value);
+            parent.left = left;
+            parent.right = right;
+
+            //由于已经存在了该对象，所以先将集合中的左节点和右节点从集合中移除
+            list.remove(left);
+            list.remove(right);
+
+            //将parent对象加入到集合中
+            list.add(parent);
+        }
+        //最终，将返回创建的赫夫曼树的头结点
+        return list.get(0);
+
+    }
+
+}
+
+/**
+ * 节点类
+ */
+class Node implements Comparable<Node> {
+    public int value;
+
+    /**
+     * 指向左子节点
+     */
+    public Node left;
+
+    /**
+     * 指向右子节点
+     */
+    public Node right;
+
+    public Node(int value) {
+        this.value = value;
+    }
+
+    @Override
+    public int compareTo(Node o) {
+        return this.value - o.value;
+    }
+
+    @Override
+    public String toString() {
+        return "Node{" +
+                "value=" + value +
+                '}';
+    }
+
+    public void preOrder(Node node) {
+        if (node == null) {
+            return;
+        }
+        System.out.print(node.value + " ");
+        preOrder(node.left);
+        preOrder(node.right);
+    }
+}
+
+```
+
+###  7.9 赫夫曼编码
+
+> - 赫夫曼编码也翻译为 ：**哈夫曼编码(Huffman Coding)**，又称：赫夫曼编码；是一种编码方式，属于一种程序算法；
+> - 赫夫曼编码是赫夫曼树在电信通讯中的经典应用之一；
+> - 赫夫曼编码广泛应用于数据文件压缩，压缩效率通常在20%——90%之间；
+> - 赫夫曼码是可变字长编码(`VLC`)的一种，也称为 最佳编码；
+
+#### 7.9.1 原理剖析
+
+![1589892928195](assets/1589892928195.png)
+
+![1589892964687](assets/1589892964687.png)
+
+![1589892995760](assets/1589892995760.png)
+
+#### 7.9.2 哈夫曼编解码
+
+赫夫曼编解码过程，是针对赫夫曼树来实现的；
+
+- 第一步：首先需要创建赫夫曼树，并将头结点返回；
+- 第二步：将赫夫曼编码与字符串的对应关系放置到一个map对象中进行存储；
+- 第三步：使用赫夫曼编码来对数据进行压缩，将所有的数据变成二进制字符串，再调用编码map映射成一个一个的字节，返回字节数组；即可压缩成功；
+- 第四步：对压缩数据进行解压：
+  - 将返回的压缩数据数组转换为二进制字符串；
+  - 将哈夫曼树映射关系的key与value交换；
+  - 解析二进制字符串，根据新的映射关系，进行解码即可；
+
+#### 7.9.3 代码实现
+
+```java
+package com.huffmantree.code;
+
+import java.util.*;
+
+/**
+ * @author ${张世林}
+ * @date 2020/05/19
+ * 作用：赫夫曼编码代码实现
+ */
+public class HuffManCode {
+    public static void main(String[] args) {
+        String msg = "i like like like java do you like a java";
+        byte[] contentBytes = msg.getBytes();
+        //得到所有节点
+        List<Node> list = getList(contentBytes);
+        //创建赫夫曼树，并返回头节点
+        Node huffManTree = createHuffManTree(list);
+        //前序遍历
+        preOrder(huffManTree);
+        //获取Huffman树编码的对应关系 32=01, 97=100, 100=11000, 117=11001, 101=1110, 118=11011,，，，
+        Map<Byte, String> codes = createHuffManCodeTable(huffManTree, "", new StringBuilder(), new HashMap<>());
+        System.out.println(codes);
+
+        //对数据根据哈夫曼编码进行压缩衣
+        byte[] zip = zip(contentBytes, codes);
+
+        //对数据进行解压
+        String decode = decode(codes, zip);
+        System.out.println(decode);
+
+    }
+
+    /**
+     * 对压缩的数据进行解码
+     * @param codes 编码解码对应关系
+     * @param zip 压缩的数据字节
+     * @return
+     */
+    private static String decode(Map<Byte, String> codes, byte[] zip) {
+        //先将byte数组转换为二进制字符串
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < zip.length; i++) {
+            String str;
+            if (i == zip.length - 1) {
+                str = byteToBitStr(false, zip[i]);
+            } else {
+                str = byteToBitStr(true, zip[i]);
+            }
+            builder.append(str);
+        }
+        String binaryStr = builder.toString();
+
+        //获取Huffman编码表的反向映射规则
+        HashMap<String, Byte> map = new HashMap<>();
+        for (Map.Entry<Byte, String> entry : codes.entrySet()) {
+            map.put(entry.getValue(), entry.getKey());
+        }
+
+        List<Byte> result = new ArrayList<>();
+        for (int i = 0; i < binaryStr.length();) {
+            boolean flag = true;
+            Byte b = null;
+            int count = 1;
+            while (flag) {
+                String substring = binaryStr.substring(i, i + count);
+                b = map.get(substring);
+                if (b == null) {
+                    count++;
+                } else {
+                    flag = false;
+                }
+            }
+            result.add(b);
+            i += count;
+        }
+
+        byte[] bytes = new byte[result.size()];
+        for (int i = 0; i < result.size(); i++) {
+            bytes[i] = result.get(i);
+        }
+
+        return new String(bytes);
+    }
+
+    /**
+     * 将byte数据转换为二进制数的字符串
+     * @return
+     */
+    private static String byteToBitStr(boolean flag, byte b) {
+        int temp = b;
+        //如果是正数，需要补高位
+        if (flag) {
+            temp |= 256;
+        }
+
+        String str = Integer.toBinaryString(temp);//返回的是二进制对应的补码
+        if (flag) {
+            return str.substring(str.length() - 8);
+        }
+        return str;
+    }
+
+    /**
+     * 根据Huffman编码表规则，对所有byte字段进行编码，得到一串想要传输的二进制数据
+     *
+     * @param bytes
+     * @param codes
+     * @return
+     */
+    private static byte[] zip(byte[] bytes, Map<Byte, String> codes) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (byte aByte : bytes) {
+            stringBuilder.append(codes.get(aByte));
+        }
+        String content2 = stringBuilder.toString();
+        System.out.println(content2);
+
+        int len = (content2.length() + 7) / 8;
+        byte[] result = new byte[len];
+        int idx = 0;
+        for (int i = 0; i < content2.length(); i += 8) {
+            String substring;
+            if (i + 8 < content2.length()) {
+                substring = content2.substring(i, i + 8);
+            } else {
+                substring = content2.substring(i);
+            }
+            result[idx++] = (byte) Integer.parseInt(substring, 2);
+        }
+        return result;
+    }
+
+    /**
+     * 将生成的huffman树对应的Huffman编码表整理出来
+     *
+     * @param node    将传入的node节点的所有叶子节点的赫夫曼编码存放到map中
+     * @param code    路径 左子节点是0，右子节点1
+     * @param builder 用于拼接路径
+     */
+    private static Map<Byte, String> createHuffManCodeTable(Node node, String code, StringBuilder builder, Map<Byte, String> codes) {
+        StringBuilder builder1 = new StringBuilder();
+        builder1.append(builder).append(code);
+        if (node != null) {
+            //判断当前节点是否是叶子节点，如下是非叶子节点
+            if (node.data == (byte) 0) {
+                //向左递归，向右递归，向左递归，则在数据中拼接0 ，右递归的话拼接1
+                createHuffManCodeTable(node.left, "0", builder1, codes);
+                createHuffManCodeTable(node.right, "1", builder1, codes);
+            } else {
+                //已经到达了叶子节点，
+                codes.put(node.data, builder1.toString());
+            }
+        }
+        return codes;
+    }
+
+    /**
+     * 前序遍历
+     *
+     * @param root
+     */
+    private static void preOrder(Node root) {
+        if (root != null) {
+            root.preOrder(root);
+        }
+    }
+
+    /**
+     * 创建赫夫曼树
+     *
+     * @param list
+     * @return
+     */
+    private static Node createHuffManTree(List<Node> list) {
+        while (list.size() > 1) {
+            Collections.sort(list);
+            Node left = list.get(0);
+            Node right = list.get(1);
+            Node parent = new Node((byte) 0, left.wight + right.wight);
+            parent.left = left;
+            parent.right = right;
+            list.remove(left);
+            list.remove(right);
+            list.add(parent);
+        }
+        return list.get(0);
+    }
+
+    /**
+     * 返回Node对象集合
+     *
+     * @param bytes
+     * @return
+     */
+    private static List<Node> getList(byte[] bytes) {
+        List<Node> list = new ArrayList<Node>();
+        HashMap<Byte, Integer> map = new HashMap<>();
+        for (byte aByte : bytes) {
+            if (map.containsKey(aByte)) {
+                int i = map.get(aByte) + 1;
+                map.put(aByte, i);
+            } else {
+                map.put(aByte, 1);
+            }
+        }
+
+        for (Map.Entry<Byte, Integer> entry : map.entrySet()) {
+            Byte data = entry.getKey();
+            Integer weight = entry.getValue();
+            Node node = new Node(data, weight);
+            list.add(node);
+        }
+        return list;
+    }
+}
+
+/**
+ * 节点类
+ */
+class Node implements Comparable<Node> {
+    /**
+     * 权重值，表示此次传输的数据中该data字段出现的次数
+     */
+    public int wight;
+
+    /**
+     * 表示对应的字符
+     */
+    public byte data;
+
+    /**
+     * 指向左子节点
+     */
+    public Node left;
+
+    /**
+     * 指向右子节点
+     */
+    public Node right;
+
+    public Node(byte data, int weight) {
+        this.data = data;
+        this.wight = weight;
+    }
+
+    @Override
+    public int compareTo(Node o) {
+        return this.wight - o.wight;
+    }
+
+    @Override
+    public String toString() {
+        return "Node{" +
+                "wight=" + wight + "," +
+                "data=" + data +
+                '}';
+    }
+
+    public void preOrder(Node node) {
+        if (node == null) {
+            return;
+        }
+        System.out.println(node + " ");
+        preOrder(node.left);
+        preOrder(node.right);
+    }
+}
+```
+
+### 7.10 文件压缩与解压
+
+> ​	赫夫曼编码，是一个能够将对象经过编码之后，体积变小的一个过程；可以将字符串使用赫夫曼编码后进行网络传递，也可以针对文件进行压缩与解压操作；因为java中对文件的操作也是对字节流的操作而已；文件压缩步骤：
+>
+> - 第一步：创建赫夫曼树
+> - 第二步：根据赫夫曼树，创建赫夫曼编码的一个映射关系表；
+> - 第三步：根据映射编码表，对数据进行压缩；
+> - 第四步：将压缩的数据以及编码表，以ObjectOutputStream的方式进行写入到文件中；
+> - 第五步：解压文件的时候，首先使用ObjectInputStream方式读入编码表以及字节数据，再根据编码表的反向映射关系，得到解压数据集；重新写入到其他文件即可；
+
+代码实现：
+
+```java
+package com.huffmantree.code;
+
+import java.io.*;
+import java.util.*;
+
+/**
+ * @author ${张世林}
+ * @date 2020/05/19
+ * 作用：赫夫曼编码代码实现
+ */
+public class HuffManCode {
+    public static void main(String[] args) {
+//        String msg = "i like like like java do you like a java";
+//        byte[] contentBytes = msg.getBytes();
+        //得到所有节点
+//        List<Node> list = getList(contentBytes);
+        //创建赫夫曼树，并返回头节点
+//        Node huffManTree = createHuffManTree(list);
+        //前序遍历
+//        preOrder(huffManTree);
+        //获取Huffman树编码的对应关系 32=01, 97=100, 100=11000, 117=11001, 101=1110, 118=11011,，，，
+//        Map<Byte, String> codes = createHuffManCodeTable(huffManTree, "", new StringBuilder(), new HashMap<>());
+//        System.out.println(codes);
+
+        //对数据根据哈夫曼编码进行压缩衣
+//        byte[] zip = zip(contentBytes, codes);
+
+        //对数据进行解压
+//        String decode = decode(codes, zip);
+//        System.out.println(decode);
+
+//        zipFile("E:\\QMDownload\\SoftMgr\\GamePatch\\1\\1125904202006536\\version.list", "E:\\QMDownload\\SoftMgr\\GamePatch\\1\\1125904202006536\\version.zip");
+        unzipFile("E:\\QMDownload\\SoftMgr\\GamePatch\\1\\1125904202006536\\version.zip","E:\\QMDownload\\SoftMgr\\GamePatch\\1\\1125904202006536\\version1.list");
+    }
+
+    /**
+     * 解压文件
+     * @param sourceFileName
+     * @param targetFileName
+     */
+    private static void unzipFile(String sourceFileName, String targetFileName) {
+        FileInputStream fileInputStream = null;
+        ObjectInputStream objectInputStream = null;
+        FileOutputStream fileOutputStream = null;
+        try {
+            fileInputStream = new FileInputStream(new File(sourceFileName));
+            objectInputStream = new ObjectInputStream(fileInputStream);
+            Map<Byte, String> codeTable = (Map<Byte, String>) objectInputStream.readObject();
+            byte[] bytes = (byte[]) objectInputStream.readObject();
+
+            String decode = decode(codeTable, bytes);
+            fileOutputStream = new FileOutputStream(new File(targetFileName));
+            fileOutputStream.write(decode.getBytes());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fileInputStream.close();
+                objectInputStream.close();
+                fileOutputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 对文件进行压缩
+     * @param fileName 需要压缩的文件名
+     * @param targetZipFileName 最终输出的流
+     */
+    private static void zipFile(String fileName, String targetZipFileName) {
+        File file = new File(fileName);
+        FileInputStream inputStream = null;
+        FileOutputStream fileOutputStream = null;
+        ObjectOutputStream objectOutputStream = null;
+        try {
+            //得到文件流
+            inputStream = new FileInputStream(file);
+            byte[] bytes = new byte[inputStream.available()];
+            inputStream.read(bytes);
+
+            List<Node> list = getList(bytes);
+            Node huffManTree = createHuffManTree(list);
+            Map<Byte, String> codeTable = createHuffManCodeTable(huffManTree, "", new StringBuilder(), new HashMap<>());
+            byte[] zip = zip(bytes, codeTable);
+            fileOutputStream = new FileOutputStream(new File(targetZipFileName));
+            objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            objectOutputStream.writeObject(codeTable);
+            objectOutputStream.writeObject(zip);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (fileOutputStream != null) {
+                try {
+                    fileOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (objectOutputStream != null) {
+                try {
+                    objectOutputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
+
+    /**
+     * 对压缩的数据进行解码
+     * @param codes 编码解码对应关系
+     * @param zip 压缩的数据字节
+     * @return
+     */
+    private static String decode(Map<Byte, String> codes, byte[] zip) {
+        //先将byte数组转换为二进制字符串
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < zip.length; i++) {
+            String str;
+            if (i == zip.length - 1) {
+                str = byteToBitStr(false, zip[i]);
+            } else {
+                str = byteToBitStr(true, zip[i]);
+            }
+            builder.append(str);
+        }
+        String binaryStr = builder.toString();
+
+        //获取Huffman编码表的反向映射规则
+        HashMap<String, Byte> map = new HashMap<>();
+        for (Map.Entry<Byte, String> entry : codes.entrySet()) {
+            map.put(entry.getValue(), entry.getKey());
+        }
+
+        List<Byte> result = new ArrayList<>();
+        for (int i = 0; i < binaryStr.length();) {
+            boolean flag = true;
+            Byte b = null;
+            int count = 1;
+            while (flag) {
+                String substring = binaryStr.substring(i, i + count);
+                b = map.get(substring);
+                if (b == null) {
+                    count++;
+                } else {
+                    flag = false;
+                }
+            }
+            result.add(b);
+            i += count;
+        }
+
+        byte[] bytes = new byte[result.size()];
+        for (int i = 0; i < result.size(); i++) {
+            bytes[i] = result.get(i);
+        }
+
+        return new String(bytes);
+    }
+
+    /**
+     * 将byte数据转换为二进制数的字符串
+     * @return
+     */
+    private static String byteToBitStr(boolean flag, byte b) {
+        int temp = b;
+        //如果是正数，需要补高位
+        if (flag) {
+            temp |= 256;
+        }
+
+        String str = Integer.toBinaryString(temp);//返回的是二进制对应的补码
+        if (flag) {
+            return str.substring(str.length() - 8);
+        }
+        return str;
+    }
+
+    /**
+     * 根据Huffman编码表规则，对所有byte字段进行编码，得到一串想要传输的二进制数据
+     *
+     * @param bytes
+     * @param codes
+     * @return
+     */
+    private static byte[] zip(byte[] bytes, Map<Byte, String> codes) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (byte aByte : bytes) {
+            stringBuilder.append(codes.get(aByte));
+        }
+        String content2 = stringBuilder.toString();
+//        System.out.println(content2);
+
+        int len = (content2.length() + 7) / 8;
+        byte[] result = new byte[len];
+        int idx = 0;
+        for (int i = 0; i < content2.length(); i += 8) {
+            String substring;
+            if (i + 8 < content2.length()) {
+                substring = content2.substring(i, i + 8);
+            } else {
+                substring = content2.substring(i);
+            }
+            result[idx++] = (byte) Integer.parseInt(substring, 2);
+        }
+        return result;
+    }
+
+    /**
+     * 将生成的huffman树对应的Huffman编码表整理出来
+     *
+     * @param node    将传入的node节点的所有叶子节点的赫夫曼编码存放到map中
+     * @param code    路径 左子节点是0，右子节点1
+     * @param builder 用于拼接路径
+     */
+    private static Map<Byte, String> createHuffManCodeTable(Node node, String code, StringBuilder builder, Map<Byte, String> codes) {
+        StringBuilder builder1 = new StringBuilder();
+        builder1.append(builder).append(code);
+        if (node != null) {
+            //判断当前节点是否是叶子节点，如下是非叶子节点
+            if (node.data == (byte) 0) {
+                //向左递归，向右递归，向左递归，则在数据中拼接0 ，右递归的话拼接1
+                createHuffManCodeTable(node.left, "0", builder1, codes);
+                createHuffManCodeTable(node.right, "1", builder1, codes);
+            } else {
+                //已经到达了叶子节点，
+                codes.put(node.data, builder1.toString());
+            }
+        }
+        return codes;
+    }
+
+    /**
+     * 前序遍历
+     *
+     * @param root
+     */
+    private static void preOrder(Node root) {
+        if (root != null) {
+            root.preOrder(root);
+        }
+    }
+
+    /**
+     * 创建赫夫曼树
+     *
+     * @param list
+     * @return
+     */
+    private static Node createHuffManTree(List<Node> list) {
+        while (list.size() > 1) {
+            Collections.sort(list);
+            Node left = list.get(0);
+            Node right = list.get(1);
+            Node parent = new Node((byte) 0, left.wight + right.wight);
+            parent.left = left;
+            parent.right = right;
+            list.remove(left);
+            list.remove(right);
+            list.add(parent);
+        }
+        return list.get(0);
+    }
+
+    /**
+     * 返回Node对象集合
+     *
+     * @param bytes
+     * @return
+     */
+    private static List<Node> getList(byte[] bytes) {
+        List<Node> list = new ArrayList<Node>();
+        HashMap<Byte, Integer> map = new HashMap<>();
+        for (byte aByte : bytes) {
+            if (map.containsKey(aByte)) {
+                int i = map.get(aByte) + 1;
+                map.put(aByte, i);
+            } else {
+                map.put(aByte, 1);
+            }
+        }
+
+        for (Map.Entry<Byte, Integer> entry : map.entrySet()) {
+            Byte data = entry.getKey();
+            Integer weight = entry.getValue();
+            Node node = new Node(data, weight);
+            list.add(node);
+        }
+        return list;
+    }
+}
+
+/**
+ * 节点类
+ */
+class Node implements Comparable<Node> {
+    /**
+     * 权重值，表示此次传输的数据中该data字段出现的次数
+     */
+    public int wight;
+
+    /**
+     * 表示对应的字符
+     */
+    public byte data;
+
+    /**
+     * 指向左子节点
+     */
+    public Node left;
+
+    /**
+     * 指向右子节点
+     */
+    public Node right;
+
+    public Node(byte data, int weight) {
+        this.data = data;
+        this.wight = weight;
+    }
+
+    @Override
+    public int compareTo(Node o) {
+        return this.wight - o.wight;
+    }
+
+    @Override
+    public String toString() {
+        return "Node{" +
+                "wight=" + wight + "," +
+                "data=" + data +
+                '}';
+    }
+
+    public void preOrder(Node node) {
+        if (node == null) {
+            return;
+        }
+//        System.out.println(node + " ");
+        preOrder(node.left);
+        preOrder(node.right);
+    }
+}
+```
+
+### 7.11 二叉排序树
+
+> ​	二叉排序树(**BST: Binary Sort Tree**)，对于二叉排序树的任何一个非叶子节点，要求左子节点的值比当前节点的值小，右子节点的值比当前节点的值大；
+>
+> 注意：如果存在相同的值，则可以将该节点放在左子节点或者右子节点；
+>
+> 实例：
+>
+> ![1590213507426](assets/1590213507426.png)
 

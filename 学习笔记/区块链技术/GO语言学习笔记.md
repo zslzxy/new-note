@@ -1,4 +1,4 @@
-[toc]
+[TOC]
 # Go语言学习笔记
 **Go 语言中文网站API：https://studygolang.com/pkgdoc**
 ## 一、GO语言的特点：
@@ -72,6 +72,7 @@ func main(){
 ![image](https://note.youdao.com/yws/api/personal/file/239D29D2623346B38D76CA5497BFF7D8?method=download&shareKey=11ade671d24b652e3c122d3d272f5e29)  
 <font color=#D2691E  size=5>int、unit、rune、byte四种类型：</font>
 ![image](https://note.youdao.com/yws/api/personal/file/5F99E26E328049E9937FF4AAD05BCD5E?method=download&shareKey=29afff542ea7645833345a6870f3bbcf)
+
 > **注意：**
 >- Golang的整数类型分为：有符号与无符号类型，int uint32 类型和操作系统有关。
 >- Golang的整型类型默认声明为 int 类型。
@@ -84,6 +85,7 @@ func main(){
 ### 8、小数类型/浮点型
 <font color=#D2691E  size=5>小数类型：float32与float64  </font>  
 ![image](https://note.youdao.com/yws/api/personal/file/CCDB951DD1AE4A57BDA10CD18A49A9A4?method=download&shareKey=f99edeeaad514cd643607af554572736)  
+
 > **注意：**
 >- Golang浮点类型有固定的范围与长度，不受操作系统的影响。
 >- Golang的浮点型默认声明为float64类型。
@@ -95,10 +97,10 @@ func main(){
 ### 9、字符类型 -- byte
 **基本介绍：** 
 >- Golang中没有专门的字符类型，如果需要存储单个字符，一般使用 byte 来进行存储。  
->- Golang中的自妇产室友一串固定长度的字符连接起来的字符序列。也即是说 **Go语言中的字符串是由单个字节** 连接起来的(传统的字符串是由单个字符组成的)。   
+>- Golang中的字符串是一串固定长度的字符连接起来的字符序列。也即是说 **Go语言中的字符串是由单个字节** 连接起来的(传统的字符串是由单个字符组成的)。   
 
 >**注意：**  
->- 如果保存的字符在ASCLL表中，则可以直接使用 byte 数据类型来今夕你保存。
+>- 如果保存的字符在ASCLL表中，则可以直接使用 byte 数据类型来进行保存。
 >- 如果保存的字符超出了ASCLL表的范围，则可以使用 int 类型来进行保存。
 >   - 例如：保存ASCLL表中的单个字符--- var c1 byte = 'a'
 >   - 例如：保存超出了ASCLL表中的单个字符--- var c2 int = '中'
@@ -125,7 +127,7 @@ func main(){
 >- 使用方式 ： var c3 string = "阿瑟东 asdf45a"
 >- Go语言中的字符串一旦赋值以后，字符串的value就不能够修改。
 >- 字符串的两种表现形式：
->   - 双引号，嫩公仔双引号里面识别转义字符。
+>   - 双引号，双引号里面识别转义字符。
 >   - 反引号。以字符串的原生形态来进行输出，避免了安全问题。 例如： c5 := `asd\nadsaas`
 >- 字符串的拼接方式：
 >   - 第一种方式：var c6 = c5 + c3 （将 c3 与 c5 字符串拼接在一起）
@@ -186,7 +188,8 @@ func main(){
 >   - func ParseFloat(s string, bitSize int) (f float64, err error)
 
 > **注意：**
->- string转向基本数据类型，必须确定数据的有效性。
+>
+> - string转向基本数据类型，必须确定数据的有效性。
 
 ### 14、标准输出的 %X 所代表的的意思：
 > 通用：
@@ -197,7 +200,8 @@ func main(){
 >- %%	百分号  
 
 > 布尔值：
->- %t	单词true或false  
+>
+> - %t	单词true或false  
 
 > 整数：
 >- %b	表示为二进制
@@ -226,7 +230,7 @@ func main(){
 
 ### 15、指针
 **1）简介：**
->- 基本数据类型，变量存的就是指，也叫值类型。
+>- 基本数据类型，变量存的就是指针，也叫值类型。
 >- 获取变量的地址，使用 & 符号。例如：&num 。下面是变量的内存模型。  
 ![image](https://note.youdao.com/yws/api/personal/file/9F9F171C94EC49798771F00CB7CA6162?method=download&shareKey=a6921e643a7534be14d8a308a4863549)
 >- 指针类型，就是指 **指针变量存的是一个内存地址**，而这个指针也具有一个**一个内存地址**。下面是指针内存图：指针 ptr 的变量值为 变量i的地址，而指针也具有一个内存地址。 
@@ -367,7 +371,7 @@ const (
 **1）简介：** 
 >- 关系运算符的结果都是bool类型，也就是true或者false。
 >- 关系表达式经常用在 if结构 **的条件中** 或者 **循环结构** 中。
- 
+
 **2）关系运算符预览：**  
 ![image](https://note.youdao.com/yws/api/personal/file/BA0DC0EE86744739A56147DA54E9BB5D?method=download&shareKey=b54b0247ef35ca72ecb011c5afaa76f6)   
 
@@ -1258,7 +1262,7 @@ func main(){
 		fmt.Println(a[i])
 	}
 ```
- 
+
 #### 3）数组定义:
 数组的定义：  
 > var 数组名 [数组大小] 数据类型
@@ -1464,7 +1468,7 @@ false]
 	var slice []int = []int{1,12,3,4,5}
 	slice = append(slice,55,66,88,99)
 ```
- 
+
 7)	切片的拷贝操作。具体代码为：
 ```
     // copy(需要将数据存入的slice, 需要将数据复制出来的slice)

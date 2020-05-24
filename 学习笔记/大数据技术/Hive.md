@@ -1532,7 +1532,9 @@ SELECT [ALL | DISTINCT] select_expr, select_expr, ...
 
 #### 6.8.5 窗口函数
 
-> - `OVER()`：指定分析函数工作的数据窗口大小，这个数据窗口大小可能会随着行的变而变化
+> 原理：跟当前窗口的数据集做分析；
+
+> - `OVER()`：指定分析函数工作的数据窗口大小，这个数据窗口大小可能会随着行的变而变化；也就是使用over()函数获取对应的窗口数据集；
 >
 > - `CURRENT ROW`：当前行
 >
@@ -1547,3 +1549,130 @@ SELECT [ALL | DISTINCT] select_expr, select_expr, ...
 > - `LEAD(col,n)`：往后第n行数据
 >
 > - `NTILE(n)`：把有序分区中的行分发到指定数据的组中，各个组有编号，编号从1开始，对于每一行，NTILE返回此行所属的组的编号。注意：n必须为int类型。
+
+#### 6.8.6 Rank函数
+
+> Rank函数，主要是作用于相同数据的一个统计计数，是否计算重复行；
+>
+> Rank函数，需要结合over窗口函数进行使用，无法单独使用；
+>
+> `RANK()`：排序相同时，总数不会变；
+>
+> `DENSE_RANK()`：排序相同时会重复，总数会减少；
+>
+> `ROW_NUMBER()`：会根据顺序计算；
+
+> 实例：
+>
+> ```sql
+> select name,
+> subject,
+> score,
+> rank() over(partition by subject order by score desc) rp,
+> dense_rank() over(partition by subject order by score desc) drp,
+> row_number() over(partition by subject order by score desc) rmp
+> from score;
+> ```
+
+## 7. Hive函数
+
+### 7.1 系统内置函数
+
+> - `show functions;`   查看系统自带的函数；
+> - `desc function upper;` 显示自带函数的用法；
+> - `desc function extended upper;` 详细显示自带的函数的用法；
+
+### 7.2 自定义Hive函数
+
+> - Hive自带了一部分函数，包括max/min函数等，也能够通过自定义UDF来方便扩展；
+> - 当Hive提供的内置函数无法满足业务需求时，可以考虑使用自定义函数`UDF(user-defined function)`；
+> - 用户自定义函数分类：
+>   - `UDF(User Defined Function)`：一进一出函数；
+>   - `UDAF(User Defined Aggregation Function)`：聚集函数，多进一出；
+>   - `UDTF(User Defined Table Generating Function)`：一进多出；
+> - 官方文档地址：
+>   - https://cwiki.apache.org/confluence/display/Hive/HivePlugins
+
+> 编程步骤：
+>
+> - 继承`org.apache.hadoop.hive.ql.UDF`；
+> - 需要实现`evaluate`函数，`evaluate`函数支持重载；
+> - 在`hive`的命令行窗口创建函数；
+> - 添加jar；
+> - 创建函数；
+> - UDF必须要有返回类型，可以返回null，但是返回类型不能为void；
+
+### 7.3 创建UDF函数
+
+- 创建Maven工程；
+
+```xml
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.apache.hive/hive-exec -->
+        <dependency>
+            <groupId>org.apache.hive</groupId>
+            <artifactId>hive-exec</artifactId>
+            <version>1.2.1</version>
+        </dependency>
+    </dependencies>
+```
+
+- 创建类，继承UDF类；
+
+```java
+public class Lower extends UDF {
+
+    public int evaluate(int data) {
+        return data + 10;
+    }
+
+}
+```
+
+- 将项目打包成jar；
+
+![1588332780273](assets/1588332780273.png)
+
+- 将jar放在服务器/opt/software/hive/lib文件夹中；
+- 进入hive/bin目录，输入命令：
+
+```
+//进入hive窗口
+./hive
+
+//将jar加入到hive中
+add jar /opt/software/hive/lib/hive01.jar
+
+//将全类名作为函数加入到hive中
+create function addFive as 'com.zsl.hive.Lower'
+
+//
+select addFive(score) from student;
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
