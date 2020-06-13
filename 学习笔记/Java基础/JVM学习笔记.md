@@ -191,8 +191,13 @@ OOM 简称 “Out Of Menmery”，意思为“内存用完了”。来源于java
   该类加载器加载的是 sun.boot.class.path 路径下的所有jar，可以从System的getProperty中获取数据；  
   System.getProperty("sun.boot.class.path");
 
->- Extension类加载器： 扩展类加载器   （自己）---它负责加载<JAVA_HOME>/lib/ext目录下 或者 由系统变量-Djava.ext.dir指定位路径中的类库
->- APP ClassLoader：应用程序类加载器 / 系统类加载器  （儿子）---默认加载classpath路径下的文件。
+>- Extension类加载器： 扩展类加载器   （自己）---它负责加载<JAVA_HOME>/lib/ext目录下 或者 由系统变量-Djava.ext.dir指定位路径中的类库;   
+  该类加载器加载的是 java.ext.dirs 路径在的所有jar，可以使用System.getProperty方法获取对应的路径；
+  System.getPeoperty("java.ext.dirs");
+
+>- APP ClassLoader：应用程序类加载器 / 系统类加载器  （儿子）---默认加载classpath路径下的文件;  
+  该类加载器加载的是 java.class.path 路径下的所有jar，可以使用System.getProperty方法获取对应的路径；  
+  System.getProperty("java.class.path");
 
 ##### 2）用户自定义类加载器
 
