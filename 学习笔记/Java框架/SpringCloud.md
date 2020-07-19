@@ -1,4 +1,4 @@
-[toc]
+[TOC]
 # SpringCloud笔记
 
 
@@ -104,7 +104,7 @@ springcloud提供fallback方法来实现服务降级，当我们请求的服务�
 ##### Eureka： 
 **优点：**  
 eureka主要采取的是CAP原则的AP，高可用与分区容错性。   
-eureka的工作模式就好比是我的注册者可以注册在多个相互关联的eureka服务器上，如果某		  一个eureka服务端挂掉，其他的服务端也能够正常的为注册者提供服务。   
+eureka的工作模式就好比是我的注册者可以注册在多个相互关联的eureka服务器上，如果某一个eureka服务端挂掉，其他的服务端也能够正常的为注册者提供服务。   
 **缺点：**
 eureka没使用CAP的C原则，数据的获取可能不是最新的。
 
@@ -120,7 +120,7 @@ eureka可以很好的应对各种故障，不会因故障而停止服务。Zooke
 
 ### 12.Ribbon，Feign，Nginx的区别？
  Ribbon和Feign都是用于调用其他服务的，不过方式不同。
- 
+
 1.启动类使用的注解不同，Ribbon用的是@RibbonClient，Feign用的是@EnableFeignClients。
 
 2.服务的指定位置不同，Ribbon是在@RibbonClient注解上声明，Feign则是在定义抽象方法的接口中使用@FeignClient声明。

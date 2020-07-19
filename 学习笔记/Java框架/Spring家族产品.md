@@ -9,24 +9,24 @@ SpringBoot--1.5.13版本官方文档：https://docs.spring.io/spring-boot/docs/1
 SpringCloud--Edgware.SR3版本官方文档：https://cloud.spring.io/spring-cloud-static/Edgware.SR3/single/spring-cloud.html
 
 ## 二、Spring注解开发
-### 1、为容器添加Bean
-#### 1）@Configuration注解：
+### 1. 为容器添加Bean
+#### 1.1 @Configuration注解：
 ##### 使用场景：
 在需要给IOC容器添加Bean的时候，必须在类上面添加@Configuration注解。
 
-#### 2）@Bean注解：
+#### 1.2 @Bean注解：
 ##### 使用场景：
 当需要使用注解方式创建Bean的时候，需要在方法上面添加@Bean注解，标明这个方法是创建一个@Bean。
 ##### 注意：
-@Bean标注的方法，方法名称表示的是这个Bean的id ；方法的返回值表示的是这个Bean的类型。
+- @Bean标注的方法，方法名称表示的是这个Bean的id ；方法的返回值表示的是这个Bean的类型。
 
-@Bean标注在带有参数的方法上，会从容器中找到对应的Bean来自动注入到这个形参中。
+- @Bean标注在带有参数的方法上，会从容器中找到对应的Bean来自动注入到这个形参中。
 
-#### 3）@ComponentScan注解：
+#### 1.3 @ComponentScan注解：
 ##### 使用场景：
 相当于配置文件的包扫描。
 ##### 使用方式：
-1）type=FilterType.ANNOTATION 表示按照注解的方式进行扫描。
+- type=FilterType.ANNOTATION 表示按照注解的方式进行扫描。
 
 //排除标记有Controller注解的包
 ```
@@ -42,13 +42,13 @@ SpringCloud--Edgware.SR3版本官方文档：https://cloud.spring.io/spring-clou
 },useDefaultFilters=false)
 ```
 
-2）type=FilterType.ASSIGNABLE_TYPE  表示按照给定的类型进行扫描
+- type=FilterType.ASSIGNABLE_TYPE  表示按照给定的类型进行扫描
 
-3）type=FilterType.ASPECTJ  		   表示使用AspectJ表达式来进行扫描  
+- type=FilterType.ASPECTJ  		   表示使用AspectJ表达式来进行扫描  
 
-4）type=FilterType.REGEX   			   表示使用正则表达式来进行包扫描
+- type=FilterType.REGEX   			   表示使用正则表达式来进行包扫描
 
-5）type=FilterType.CUSTOM 		   表示使用自定义的包扫描规则
+- type=FilterType.CUSTOM 		   表示使用自定义的包扫描规则
 
 
 #### 4）@Scope注解：
@@ -431,7 +431,7 @@ spring不推荐使用编程式事务。
 
 1、注解 @EnableTransactionManagement ：开启事务控制。  
 2、注解 @Transactional ：加载在方法上，为方法提供事务控制。  
-3、配置事物管理器：  
+3、配置事物管理器：
 
 ```java
 @Bean

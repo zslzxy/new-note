@@ -1,4 +1,325 @@
 [TOC]
+# Lucene学习笔记
+
+## 一. Lucene简介
+
+`Lucene`是一个封装了全文检索算法的一个快速查找算法类库，专注于企业级搜索、查询、多维统计等功能模块的实现；
+
+## 二. 常见查询、搜索算法
+
+### 2.1 顺序扫描法
+
+> - 算法描述：从头到尾对文件进行查找，直到扫描完整个文件为止；
+> - 优势：算法查找准确率高；
+> - 缺点：随着数据量的增大，算法效率变低；
+
+### 2.2 倒排索引
+
+> - 算法描述：查询时会先将内容进行提起出来组装成文档，对文档进行切分词，组装成索引目录，索引和文档有关联关系，可通过查询索引，找到索引对应的文档所在目录即可；
+>   - 切分词：使用分词器对文档进行分词，将一个文档进行单词切分即可；
+> - 优势：切分后的词组成索引目录，实现了重复索引的丢弃，保证索引查询的简洁高效性能；
+
+
+
+## 三.全文检索
+
+> `Lucene`是全文检索的一个开源工具引擎，提供了一个全文检索架构，提供了一个完整的查询引擎和索引引擎以及部分文档分析引擎；
+
+### 3.1 Lucene索引流程图
+
+![1595079580417](assets/1595079580417.png)
+
+### 3.2 Lucene文档-Document
+
+#### 3.2.1 创建文档
+
+> - `Lucene`中使用的是Document对象作为文档，通常情况下类比于一条数据库中的数据；
+> - `Document`队对象存在着一个唯一的索引id，该ID是`Lucene`自定义实现的，无法进行控制；
+> - `Field`是`Document`对象中的属性集合，是一个或者多个属性组装成的集合对象，类比数据库中一条数据里面的多个字段；
+> - `Field`中的作用域是属于独立的`Document`对象中的，每一Document对象中的Field可不一致，并且一个Document对象中可以存在多个`Field-key`与`Field-value`;
+>
+> ![1595082249402](assets/1595082249402.png)
+
+#### 3.2.2 创建索引案例
+
+```java
+    @Test
+    public void createIndexWriter() throws IOException {
+        List<Food> data = Utils.getList();
+        //创建文档集合
+        List<Document> documents = new ArrayList<Document>();
+        data.stream().forEach(food -> {
+            Document document = new Document();
+            documents.add(document);
+            document.add(new IntPoint("id", food.getId()));
+            document.add(new TextField("food_name", food.getFood_name(), Field.Store.YES));
+            document.add(new TextField("food_desc", food.getFood_desc(), Field.Store.YES));
+            document.add(new TextField("food_type", food.getFood_type(), Field.Store.YES));
+            document.add(new TextField("food_address", food.getFood_address(), Field.Store.YES));
+            document.add(new TextField("food_info", food.getFood_info(), Field.Store.YES));
+            document.add(new TextField("food_material", food.getFood_material(), Field.Store.YES));
+            document.add(new TextField("food_user_id", food.getFood_user_id(), Field.Store.YES));
+            document.add(new TextField("food_user_name", food.getFood_user_name(), Field.Store.YES));
+            document.add(new TextField("food_score", String.valueOf(food.getFood_score()), Field.Store.YES));
+            document.add(new TextField("food_score", String.valueOf(food.getFood_score() + Math.random()), Field.Store.YES));
+        });
+
+        //创建分词器
+        IKAnalyzer analyzer = new IKAnalyzer();
+        FSDirectory directory = FSDirectory.open(Paths.get("F:\\APP\\Lucene"));
+        IndexWriterConfig writerConfig = new IndexWriterConfig(analyzer);
+        IndexWriter indexWriter = new IndexWriter(directory, writerConfig);
+        indexWriter.addDocuments(documents);
+        indexWriter.close();
+    }
+
+```
+
+#### 3.2.3 搜索案例
+
+```java
+  public void indexSearchTest() throws IOException, ParseException {
+        IKAnalyzer analyzer = new IKAnalyzer();
+        FSDirectory directory = FSDirectory.open(Paths.get("F:\\APP\\Lucene"));
+        IndexReader indexReader = DirectoryReader.open(directory);
+        IndexSearcher indexSearcher = new IndexSearcher(indexReader);
+        QueryParser queryParser = new QueryParser("food_name", analyzer);
+        Query query = queryParser.parse("芝麻");
+        TopDocs search = indexSearcher.search(query, 10);
+        for (ScoreDoc scoreDoc : search.scoreDocs) {
+            int doc = scoreDoc.doc;
+            Document document = indexReader.document(doc);
+            String str = document.toString();
+            System.out.println(str);
+        }
+    }
+```
+
+
+
+### 4. Lucene涉及组件
+
+> - `Document`：文档对象，作用于文档的管理；
+> - `Field`：属性对象，包含于`Document`对象中，key值与value值均可重复；
+>
+> | Field类                                        | 数据类型               | Analyzer是否分词 | Indexed是否创建索引 | Store是否存储 | 说明                                                         |
+> | ---------------------------------------------- | ---------------------- | ---------------- | ------------------- | ------------- | ------------------------------------------------------------ |
+> | `StringField(fieldName, fieldValue,Store.YES)` | String                 | 否               | 是                  | 是/否         | 用于构建一个字符串Field，**整个字符串存储在索引中**，**不进行分词**，通常使用Store来控制是否存储在文档中； |
+> | `FloatPoint(fieldName, fieldValue)`            | float                  | 是               | 是                  | 否            | 用于构建一个Float型的Field，**进行分词和构建索引，不存储在文档中** |
+> | `DoublePoint(fieldName, fieldValue)`           | double                 | 是               | 是                  | 否            | 用于构建一个double型的Field，**进行分词和构建索引，不存储在文档中** |
+> | `IntPoint(fieldName, fieldValue)`              | int                    | 是               | 是                  | 否            | 用于构建一个int型的Field，**进行分词和构建索引，不存储在文档中** |
+> | `LongPoint(fieldName, fieldValue)`             | long                   | 是               | 是                  | 否            | 用于构建一个long型的Field，**进行分词和构建索引，不存储在文档中** |
+> | `StoreField(fieldName, fieldValue)`            | 重载方法，支持多种类型 | 否               | 否                  | 是            | 用于构建一个不同类型的Field，**不进行分词和构建索引，存储在文档中** |
+> | `TextField(fieldName, fieldValue,Store.YES)`   | 字符串 或者 流         | 是               | 是                  | 是/否         | 用于构建一个double型的Field，**进行分词和构建索引，不存储在文档中** |
+> | `NumberDocValuesField(fieldName, fieldValue)`  | 数值类型               |                  |                     |               | **配合其他field进行排序使用**                                |
+>
+> 
+>
+> - `IndexWriter`：写入索引库的操作对象；
+> - `IkAnalyzer`：中文分词器，主要作用于写入的document进行分词、搜索条件分词；
+> - `IndexWriterConfig`：配置写入`IndexWriter`对象的信息；
+> - `Directory`：文件系统对象，主要是操作Lucene的索引库；
+>   - `FSDirectory`：通常使用的文件系统对象实现类；
+> - `IndexReader`：文件系统的读取类对象；
+> - `IndexSearcher`：文档索引系统的搜索类对象；
+> - `QueryParser`：将输入的查询条件封装为Lucene需要的查询条件对象；
+> - `Query`：封装的查询条件对象；
+> - `TopDocs`：搜索的检索数据集合，包含文档的条数、分数、文档唯一索引等；
+
+### 4.1 使用案例
+
+> - 当使用`DoublePoint`、`IntPoint`等数据结构时，无法将数据保存到`document`中，所以可以使用`StoredField`将数据保存到document中进行存储；
+> - 使用范围查询的字段，均需要设置索引的field；
+
+```java
+    public void createIndexWriter() throws IOException {
+        List<Food> data = Utils.getList();
+        //创建文档集合
+        List<Document> documents = new ArrayList<Document>();
+        data.stream().forEach(food -> {
+            Document document = new Document();
+            documents.add(document);
+            /**
+             * 通常情况：
+             *      id 关联的是数据库的唯一主键
+             *      是否分词： 否，因为ID一般是不需要分词的
+             *      是否索引： 是，可根据id查找到对应的document
+             *      是否存储： 是，通常情况下，id是需要关联数据库的，所以在document需要存储id
+             *  StringField符合上述需求
+             */
+            document.add(new StringField("id", String.valueOf(food.getId()), Field.Store.YES));
+
+            /**
+             * 通常情况：
+             *      name是数据document的名称，相当于标题，适用于各个场景
+             *      是否分词：是，因为名称是字符串组合而成
+             *      是否索引：是，因为名称需要进行索引
+             *      是否存储：是，因为需要在document中获取id值
+             *  TextField符合上述需求
+             */
+            document.add(new TextField("food_name", food.getFood_name(), Field.Store.YES));
+            document.add(new TextField("food_desc", food.getFood_desc(), Field.Store.YES));
+            document.add(new TextField("food_address", food.getFood_address(), Field.Store.YES));
+            document.add(new TextField("food_info", food.getFood_info(), Field.Store.YES));
+            document.add(new TextField("food_material", food.getFood_material(), Field.Store.YES));
+            document.add(new TextField("food_user_name", food.getFood_user_name(), Field.Store.YES));
+
+            /**
+             * 是否分词：否
+             * 是否索引：是
+             * 是否存储：是
+             */
+            document.add(new StringField("food_user_id", food.getFood_user_id(), Field.Store.YES));
+            document.add(new StringField("food_type", food.getFood_type(), Field.Store.YES));
+
+
+            /**
+             * 是否分词：通常情况下，是需要进行分词的    Lucene使用范围查询，是必须进行分词的
+             * 是否索引：是，因为会涉及到范围查询
+             * 是否存储：是，这个需要在界面进行展示
+             * 由于IntPoint无法再文档中进行存储数据，所以需要使用StoreField将分数进行存储
+             *
+             */
+            document.add(new IntPoint("food_score", food.getFood_score()));
+            document.add(new StoredField("food_score",food.getFood_score()));
+
+            /**
+             * 图片路径是不需要进行查询，只需要保存
+             * 是否分词：否
+             * 是否索引：否
+             * 是否存储：是
+             * StoredField符合上诉情况
+             */
+            document.add(new StoredField("food_iamge", food.getFood_image()));
+        });
+
+        //创建分词器
+        IKAnalyzer analyzer = new IKAnalyzer();
+        FSDirectory directory = FSDirectory.open(Paths.get("F:\\APP\\Lucene"));
+        IndexWriterConfig writerConfig = new IndexWriterConfig(analyzer);
+        IndexWriter indexWriter = new IndexWriter(directory, writerConfig);
+        indexWriter.addDocuments(documents);
+        indexWriter.close();
+    }
+```
+
+### 4.2 索引操作
+
+```java
+ @Test
+    public void indexUpdate() throws IOException {
+        Document document = new Document();
+        document.add(new StringField("id", "723", Field.Store.YES));
+        document.add(new TextField("food_name", "奶香柠檬茶", Field.Store.YES));
+        document.add(new TextField("food_desc", "奶香柠檬茶", Field.Store.YES));
+        document.add(new TextField("food_address", "重庆市局", Field.Store.YES));
+        IKAnalyzer analyzer = new IKAnalyzer();
+        FSDirectory directory = FSDirectory.open(Paths.get("F:\\APP\\Lucene"));
+        IndexWriterConfig writerConfig = new IndexWriterConfig(analyzer);
+        IndexWriter indexWriter = new IndexWriter(directory, writerConfig);
+        indexWriter.updateDocument(new Term("id", "723"), document);
+        indexWriter.close();
+    }
+
+    /**
+     * 索引删除
+     */
+    @Test
+    public void testDeleteIndex() throws IOException {
+        IKAnalyzer analyzer = new IKAnalyzer();
+        FSDirectory directory = FSDirectory.open(Paths.get("F:\\APP\\Lucene"));
+        IndexWriterConfig writerConfig = new IndexWriterConfig(analyzer);
+        IndexWriter indexWriter = new IndexWriter(directory, writerConfig);
+
+        indexWriter.deleteDocuments(new Term("id", "723"));
+        indexWriter.close();
+    }
+```
+
+## 5. 分词器
+
+### 5.1 标准分词器-StandardAnalyzer
+
+> `Lcuene`自带的标准分词器，作用于英文分词器分词；针对中文分词是不够友好的，采用的是一个汉字一个词语；
+
+### 5.2 WhitespaceAnalyzer
+
+> `Lucene`中自带的分词器，主要是作用于空格的去除；不支持中文；
+
+## 5.3 SimpleAnalyzer
+
+> `Lucene`自带的分词器，主要是将除了字母以外的所有字符去除，并将所有字母从小写改为大写，并且会将数字进行剔除，不支持中文；
+
+## 5.4 CJKAnalyzer
+
+> 支持中日韩三种语言分词，中文是二分法分词，去掉空格，去掉标点符号，中文支持不友好；
+
+## 6. Query查询
+
+> `Query`查询时，需要创建一个Query查询对象；
+>
+> - `QueryParser`：主要是用于创建Query对象，封装数据；
+>
+>   - 该对象中可以使用连接符，直接在多个筛选条件中使用 ` AND `即可；
+>     - `AND`：多维度之间使用AND进行关联；
+>     - `OR`：多维度之间使用OR进行关联；
+>   - 使用方式：
+>
+>   ```java
+>   IKAnalyzer analyzer = new IKAnalyzer();
+>   FSDirectory directory = FSDirectory.open(Paths.get("F:\\APP\\Lucene"));
+>   IndexReader indexReader = DirectoryReader.open(directory);
+>   IndexSearcher indexSearcher = new IndexSearcher(indexReader);
+>   QueryParser queryParser = new QueryParser("food_name", analyzer);
+>   Query query = queryParser.parse("芝麻 OR 早餐");
+>   TopDocs search = indexSearcher.search(query, 10);
+>   ```
+>
+>   
+
+
+
+## 7. Lucene索引文件
+
+> `Lucene`创建的索引，是需要存储在索引文件中进行保存的，索引文件主要分为：
+>
+> | 文件名              | 文件扩展名   | 描述                                                        |
+> | ------------------- | ------------ | ----------------------------------------------------------- |
+> | Segments File       | segment_N    | 保存一个提交点的信息                                        |
+> | Lock File           | write.lock   | 上锁，放置索引文件被多线程操作                              |
+> | Segment Info        | .si          | 保存了索引段的元数据信息                                    |
+> | Compound File       | .cfs    .cfe | 一个可选的虚拟文件，把所有的索引信息都存入到复合索引文件中  |
+> | Fields              | .fnm         | 保存fields的相关信息                                        |
+> | Field Index         | .fdx         | 保存指向field data的指针                                    |
+> | Field Data          | .fdt         | 文档存储的字段的值                                          |
+> | Term Index          | .tip         | 到Term Dictionary的索引                                     |
+> | Term Dictionary     | .tim         | term 词典，存储term信息                                     |
+> | Frequncies          | .doc         | 由包含每个term以及频率的docs的列表组成                      |
+> | Positions           | .pos         | 存储出现在索引中每个term的位置信息                          |
+> | Payloads            | .pay         | 存储额外的term信息                                          |
+> | Norms               | .nvd    .nvm | .nvm保存索引字段加权因子的元数据  . nvd保存索引字段加权数据 |
+> | Per-Document-Values | .dvd    .dvm | .dvm保存索引文档评分因子元数据， .dvd保存索引文档评分数据   |
+>
+> 
+
+### 7.1 索引文件词典数据结构
+
+> 倒排索引词典位于内存当中，其结构由其重要，词典结构很多，但是需要从时间与空间上找到一个快速查找的平衡点，所以需要使用不同的数据结构；
+>
+> | 数据结构                 | 优缺点                                           |
+> | ------------------------ | ------------------------------------------------ |
+> | 跳跃表                   | 占用内存小，可调节，对模糊查询支持不友好         |
+> | 排序列表                 | 使用二分法进行查找，可能导致二叉树不平衡         |
+> | 字典表                   | 查询效率与字符串长度有关，只适合英文词典         |
+> | 哈希表                   | 性能高，内存消耗大                               |
+> | 双数组字典数             | 适合中文字典，内存占用小，常见分词工具采用该算法 |
+> | Finite State Transducers | 一种有限状态机，Lucene4开源实现，并大量使用      |
+> | B树                      | 磁盘索引，方便、效率慢，适用于数据库6            |
+>
+> 
+
+
+
 # ES学习笔记
 
 ​	ES是一个分布式的实时搜索分析引擎，它能够提欧共快速的去规模、探索对应的数据。主要包括：
