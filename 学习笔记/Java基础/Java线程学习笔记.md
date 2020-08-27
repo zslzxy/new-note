@@ -6,6 +6,136 @@
 
 
 
+## Semaphore
+
+> `Semaphore`是在多线程中使用信号量的方式，作用于多线程的锁机制；其实就是在Semaphore维护了一个计数器，该计数器实现的是相当于令牌的模式，根据令牌来实现多线程访问信号量的限制；
+
+```java
+package current;
+
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * @author ${张世林}
+ * @date 2020/07/17
+ * 作用：
+ */
+public class SemaphoreExample {
+
+    public static void main(String[] args) {
+        SemaphoreLock lock = new SemaphoreLock();
+
+        for (int i = 0; i < 4; i++) {
+            new Thread(() -> {
+                System.out.println(Thread.currentThread().getName() + " is running");
+                try {
+                    lock.lock();
+                    System.out.println(Thread.currentThread().getName() + " get a lock");
+                    TimeUnit.SECONDS.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } finally {
+                    lock.unlock();
+                    System.out.println(Thread.currentThread().getName() + " is release the lock");
+                }
+            }).start();
+        }
+    }
+
+    static class SemaphoreLock {
+        /**
+         * Semaphore是java提供的信号量，该信号量相当于是用于限制并发量请求，
+         *      acquire方法是获取一个信号量，获取到信号量以后才可从waiting转换为running
+         *      release方法是释放信号量，将线程获取到的信号量进行释放
+         */
+        final Semaphore lock = new Semaphore(2);
+
+        public void lock() throws InterruptedException {
+            lock.acquire();
+        }
+
+        public void unlock() {
+            lock.release();
+        }
+    }
+}
+```
+
+
+
+## ReentrantLock
+
+
+
+## Phaser
+
+> `Phaser`是作用于多线程领域里面，多个线程处理完毕以后，进入等待其他线程执行完毕，执行完毕以后即可继续向下进行执行；
+>
+> **特点：**
+>
+> - `Phaser`是一个能够实现不指定大小的多线程同步工具，所以可创建不定大小的Phaser；
+> - `Phaser`是需要进行注册的，将Thread注册到Phaser中，Phaser才能够对其进行多线程同步控制；
+>
+> **方法：**
+>
+> - `public int register()`：将当前线程注册到Phaser中；
+> - `public int arriveAndAwaitAdvance() `：在Phaser中注册的线程，执行到此方法处时，需要等待所有的线程均执行到了该方法处；
+
+- 案例一：
+
+```java
+package current;
+
+import java.util.Random;
+import java.util.concurrent.Phaser;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.IntStream;
+
+/**
+ * @author ${张世林}
+ * @date 2020/08/26
+ * 作用：
+ */
+public class PhaserTest {
+
+    public static void main(String[] args) {
+        final Phaser phaser = new Phaser();
+
+        IntStream.rangeClosed(0,5).boxed().map(i -> phaser).forEach(Task::new);
+
+        phaser.register();
+        phaser.arriveAndAwaitAdvance();
+        System.out.println(" all of worker finished th task;");
+    }
+
+    static class Task extends Thread {
+
+        private final Phaser phaser;
+
+        Task(Phaser phaser) {
+            this.phaser = phaser;
+            this.phaser.register();
+            this.start();
+        }
+
+        @Override
+        public void run() {
+            System.out.println("the worker " + getName() + " is running");
+            try {
+                TimeUnit.SECONDS.sleep(new Random(3).nextInt());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("the worker " + getName() + " done;");
+            phaser.arriveAndAwaitAdvance();
+        }
+    }
+
+}
+
+```
+
 
 
 
@@ -1971,6 +2101,8 @@ String thread1 = Thread.currentThread().getName();
 
 - 捕获中断信号关闭线程。
 - 使用volatile开关控制。
+
+
 
 
 
